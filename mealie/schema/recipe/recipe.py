@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session, joinedload, selectinload
 from sqlalchemy.orm.interfaces import LoaderOption
 
 from mealie.core.config import get_app_dirs
+from mealie.db.models.users.users import User
 from mealie.schema._mealie import MealieModel, SearchType
 from mealie.schema._mealie.mealie_model import UpdatedAtField
 from mealie.schema.response.pagination import PaginationBase
@@ -90,6 +91,8 @@ class RecipeSummary(MealieModel):
     name: str | None = None
     slug: Annotated[str, Field(validate_default=True)] = ""
     image: Any | None = None
+    recipe_servings: float = 0
+    recipe_yield_quantity: float = 0
     recipe_yield: str | None = None
 
     total_time: str | None = None
@@ -120,6 +123,19 @@ class RecipeSummary(MealieModel):
             return str(val)
 
         return val
+
+    @property
+    def recipe_yield_display(self) -> str:
+        return f"{self.recipe_yield_quantity} {self.recipe_yield}".strip()
+
+    @classmethod
+    def loader_options(cls) -> list[LoaderOption]:
+        return [
+            joinedload(RecipeModel.recipe_category),
+            joinedload(RecipeModel.tags),
+            joinedload(RecipeModel.tools),
+            joinedload(RecipeModel.user).load_only(User.household_id),
+        ]
 
 
 class RecipePagination(PaginationBase):

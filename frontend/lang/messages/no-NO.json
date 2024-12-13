@@ -182,6 +182,7 @@
     "date": "Dato",
     "id": "Id",
     "owner": "Eier",
+    "change-owner": "Change Owner",
     "date-added": "Dato lagt til",
     "none": "Ingen",
     "run": "Kjør",
@@ -212,7 +213,11 @@
     "clipboard-copy-failure": "Kunne ikke kopiere til utklippstavlen.",
     "confirm-delete-generic-items": "Er du sikker på at du vil slette følgende elementer?",
     "organizers": "Organisatorer",
-    "caution": "Forsiktig"
+    "caution": "Forsiktig",
+    "show-advanced": "Show Advanced",
+    "add-field": "Add Field",
+    "date-created": "Date Created",
+    "date-updated": "Date Updated"
   },
   "group": {
     "are-you-sure-you-want-to-delete-the-group": "Er du sikker på at du vil slette <b>{groupName}<b/>?",
@@ -241,13 +246,14 @@
     "manage-members": "Administrer medlemmer",
     "manage-members-description": "Administrer rettighetene til medlemmene i ditt hushold. {manage} lar brukeren få tilgang til dataadministrasjonssiden. {invite} lar brukeren generere invitasjonslenker for andre brukere. Gruppeeiere kan ikke endre egne tillatelser.",
     "manage": "Administrer",
+    "manage-household": "Manage Household",
     "invite": "Inviter",
     "looking-to-update-your-profile": "Ønsker du å oppdatere profilen din?",
     "default-recipe-preferences-description": "Dette er standardinnstillingene når en ny oppskrift blir opprettet i gruppen din. Disse kan endres for individuelle oppskrifter i oppskriftsmenyen.",
     "default-recipe-preferences": "Standard oppskriftsinnstillinger",
     "group-preferences": "Gruppeinnstillinger",
     "private-group": "Privat gruppe",
-    "private-group-description": "Når du setter gruppen din til privat, vil alle offentlige visningsalternativer tilbakestilles til standardverdiene. Dette overskriver individuelle husholds eller oppskrifters offentlige visningsinnstillinger.",
+    "private-group-description": "Setting your group to private will disable all public view options. This overrides any individual public view settings",
     "enable-public-access": "Aktiver offentlig tilgang",
     "enable-public-access-description": "Gjør gruppeoppskrifte offentlige som standard, og tillat besøkende å se oppskrifter uten å logge inn",
     "allow-users-outside-of-your-group-to-see-your-recipes": "Tillat brukere utenfor gruppen å se oppskriftene dine",
@@ -285,7 +291,9 @@
     "admin-household-management-text": "Endringer i denne husholdningen vil umiddelbart gjelde.",
     "household-id-value": "Husholdningenes id: {0}",
     "private-household": "Privat husholdning",
-    "private-household-description": "Når du setter husholdningen din til privat, vil alle offentlige visningsalternativer tilbakestilles til standardverdiene. Dette overskriver individuelle oppskrifters offentlige visningsinnstillinger.",
+    "private-household-description": "Setting your household to private will disable all public view options. This overrides any individual public view settings",
+    "lock-recipe-edits-from-other-households": "Lock recipe edits from other households",
+    "lock-recipe-edits-from-other-households-description": "When enabled only users in your household can edit recipes created by your household",
     "household-recipe-preferences": "Husholdningenes oppskriftsinnstillinger",
     "default-recipe-preferences-description": "Dette er standardinnstillingene når en ny oppskrift blir opprettet i din husholdning. Disse kan endres for individuelle oppskrifter i oppskrifters innstillinger.",
     "allow-users-outside-of-your-household-to-see-your-recipes": "Tillat brukere utenfor din husholdning å se oppskriftene dine",
@@ -312,6 +320,10 @@
     "mealplan-settings": "Måltidsplaninnstillinger",
     "mealplan-update-failed": "Oppdatering av måltidsplan mislyktes",
     "mealplan-updated": "Måltidsplan oppdatert",
+    "mealplan-households-description": "If no household is selected, recipes can be added from any household",
+    "any-category": "Any Category",
+    "any-tag": "Any Tag",
+    "any-household": "Any Household",
     "no-meal-plan-defined-yet": "Ingen måltidsplan er definert ennå",
     "no-meal-planned-for-today": "Ingen måltid planlagt i dag",
     "numberOfDays-hint": "Antall dager på sideinnlasting",
@@ -344,7 +356,7 @@
     "for-type-meal-types": "for {0} måltidstyper",
     "meal-plan-rules": "Regler for måltidsplan",
     "new-rule": "Ny regel",
-    "meal-plan-rules-description": "Du kan opprette regler for automatisk valg av oppskrifter for dine måltidsplaner. Disse reglene brukes av serveren til å bestemme det tilfeldige utvalget av oppskrifter som skal velges fra når det opprettes måltidsplaner. Vær oppmerksom på at hvis regler har de samme begrensningene for dag/type, vil kategoriene til reglene bli slått sammen. I praksis er det unødvendig å opprette duplikater av regler, men det er mulig å gjøre det.",
+    "meal-plan-rules-description": "You can create rules for auto selecting recipes for your meal plans. These rules are used by the server to determine the random pool of recipes to select from when creating meal plans. Note that if rules have the same day/type constraints then the rule filters will be merged. In practice, it's unnecessary to create duplicate rules, but it's possible to do so.",
     "new-rule-description": "Ved opprettelse av en ny regel for en måltidsplan kan du begrense regelen til å gjelde for en bestemt ukedag og/eller en bestemt type måltid. For å ta i bruk en regen alle dager eller alle måltider kan du sette regelen til \"Enhver\" som gjelder for alle mulige verdier for dag- og/eller måltidstyper.",
     "recipe-rules": "Regler for oppskrifter",
     "applies-to-all-days": "Gjelder for alle dager",
@@ -419,6 +431,7 @@
     "paste-in-your-recipe-data-each-line-will-be-treated-as-an-item-in-a-list": "Lim inn oppskriftsdataene. Hver linje blir behandlet som et element i en liste",
     "recipe-markup-specification": "Spesifikasjon for oppskriftsmerking",
     "recipe-url": "Nettadresse til oppskrift",
+    "recipe-html-or-json": "Recipe HTML or JSON",
     "upload-a-recipe": "Last opp oppskrift",
     "upload-individual-zip-file": "Last opp en individuell .zip-fil eksportert fra en annen Mealie-instans.",
     "url-form-hint": "Kopier og lim inn en lenke fra nettstedet med favorittoppskriftene dine",
@@ -453,6 +466,7 @@
     "calories-suffix": "kalorier",
     "carbohydrate-content": "Karbohydrater",
     "categories": "Kategorier",
+    "cholesterol-content": "Cholesterol",
     "comment-action": "Kommenter",
     "comment": "Kommentar",
     "comments": "Kommentarer",
@@ -499,6 +513,7 @@
     "recipe-updated": "Oppskrift oppdatert",
     "remove-from-favorites": "Fjern fra favoritter",
     "remove-section": "Fjern seksjon",
+    "saturated-fat-content": "Saturated fat",
     "save-recipe-before-use": "Lagre oppskrift før bruk",
     "section-title": "Seksjonstittel",
     "servings": "Porsjoner",
@@ -509,7 +524,9 @@
     "sugar-content": "Sukker",
     "title": "Tittel",
     "total-time": "Total tid",
+    "trans-fat-content": "Trans-fat",
     "unable-to-delete-recipe": "Kan ikke slette oppskrift",
+    "unsaturated-fat-content": "Unsaturated fat",
     "no-recipe": "Ingen oppskrift",
     "locked-by-owner": "Låst av eier",
     "join-the-conversation": "Delta i samtalen",
@@ -597,10 +614,16 @@
     "scrape-recipe-description": "Skrap en oppskrift ved bruk av nettadresse. Oppgi nettadressen til nettstedet du vil skrape, så vil Mealie forsøke å skrape oppskriften fra den siden og legge den til i samlingen din.",
     "scrape-recipe-have-a-lot-of-recipes": "Har du mange oppskrifter du ønsker å skrape samtidig?",
     "scrape-recipe-suggest-bulk-importer": "Prøv masseimporten",
+    "scrape-recipe-have-raw-html-or-json-data": "Have raw HTML or JSON data?",
+    "scrape-recipe-you-can-import-from-raw-data-directly": "You can import from raw data directly",
     "import-original-keywords-as-tags": "Importer originale søkeord som emneord",
     "stay-in-edit-mode": "Forbli i redigeringsmodus",
     "import-from-zip": "Importer fra zip-fil",
     "import-from-zip-description": "Importer en enkelt oppskrift som ble eksportert fra en annen Mealie-instans.",
+    "import-from-html-or-json": "Import from HTML or JSON",
+    "import-from-html-or-json-description": "Import a single recipe from raw HTML or JSON. This is useful if you have a recipe from a site that Mealie can't scrape normally, or from some other external source.",
+    "json-import-format-description-colon": "To import via JSON, it must be in valid format:",
+    "json-editor": "JSON Editor",
     "zip-files-must-have-been-exported-from-mealie": ".zip-filer må ha blitt eksportert fra Mealie",
     "create-a-recipe-by-uploading-a-scan": "Opprett en oppskrift ved å laste opp en skanning.",
     "upload-a-png-image-from-a-recipe-book": "Last opp et png-bilde fra en oppskriftsbok",
@@ -638,7 +661,8 @@
       "missing-unit": "Opprett manglende enhet: {unit}",
       "missing-food": "Opprett manglende mat: {food}",
       "no-food": "Ingen matvarer"
-    }
+    },
+    "reset-servings-count": "Reset Servings Count"
   },
   "search": {
     "advanced-search": "Avansert søk",
@@ -649,6 +673,7 @@
     "or": "Eller",
     "has-any": "Har enhver",
     "has-all": "Har alle",
+    "clear-selection": "Clear Selection",
     "results": "Resultater",
     "search": "Søk",
     "search-mealie": "Søk i Mealie (trykk /)",
@@ -987,6 +1012,7 @@
     "administrator": "Administrator",
     "user-can-invite-other-to-group": "Bruker kan invitere andre til gruppe",
     "user-can-manage-group": "Brukeren kan administrere gruppe",
+    "user-can-manage-household": "User can manage household",
     "user-can-organize-group-data": "Brukeren kan organisere gruppedata",
     "enable-advanced-features": "Aktiver avanserte funksjoner",
     "it-looks-like-this-is-your-first-time-logging-in": "Det ser ut som dette er første gang du logger på.",
@@ -1241,7 +1267,13 @@
       "here-are-a-few-things-to-help-you-get-started": "Her er noen ting som kan hjelpe deg å komme i gang med Mealie",
       "restore-from-v1-backup": "Har du en sikkerhetskopi fra en tidligere forekomst av Mealie v1? Du kan gjenopprette den her.",
       "manage-profile-or-get-invite-link": "Administrer din egen profil, eller hent en invitasjonslenke for å dele med andre."
-    }
+    },
+    "debug-openai-services": "Debug OpenAI Services",
+    "debug-openai-services-description": "Use this page to debug OpenAI services. You can test your OpenAI connection and see the results here. If you have image services enabled, you can also provide an image.",
+    "run-test": "Run Test",
+    "test-results": "Test Results",
+    "group-delete-note": "Groups with users or households cannot be deleted",
+    "household-delete-note": "Households with users cannot be deleted"
   },
   "profile": {
     "welcome-user": "Velkommen, {0}!",
@@ -1294,7 +1326,7 @@
   },
   "cookbook": {
     "cookbooks": "Kokebøker",
-    "description": "Kokebøker er en annen måte å organisere oppskrifter på ved å lage tverrsnitt av oppskrifter og emneord. Å lage en kokebok vil legge til en oppføring i sidepanelet, og alle oppskriftene med de valgte emneordene og kategoriene vil bli vist i kokeboken.",
+    "description": "Cookbooks are another way to organize recipes by creating cross sections of recipes, organizers, and other filters. Creating a cookbook will add an entry to the side-bar and all the recipes with the filters chosen will be displayed in the cookbook.",
     "public-cookbook": "Offentlig kokebok",
     "public-cookbook-description": "Offentlige kokebøker kan deles med ikke-Mealie-brukere og vil bli vist på din gruppeside.",
     "filter-options": "Filteralternativer",
@@ -1307,5 +1339,28 @@
     "household-cookbook-name": "{0} kokebok {1}",
     "create-a-cookbook": "Opprett en kokebok",
     "cookbook": "Kokebok"
+  },
+  "query-filter": {
+    "logical-operators": {
+      "and": "AND",
+      "or": "OR"
+    },
+    "relational-operators": {
+      "equals": "equals",
+      "does-not-equal": "does not equal",
+      "is-greater-than": "is greater than",
+      "is-greater-than-or-equal-to": "is greater than or equal to",
+      "is-less-than": "is less than",
+      "is-less-than-or-equal-to": "is less than or equal to"
+    },
+    "relational-keywords": {
+      "is": "is",
+      "is-not": "is not",
+      "is-one-of": "is one of",
+      "is-not-one-of": "is not one of",
+      "contains-all-of": "contains all of",
+      "is-like": "is like",
+      "is-not-like": "is not like"
+    }
   }
 }

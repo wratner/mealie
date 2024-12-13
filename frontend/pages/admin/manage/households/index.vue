@@ -4,25 +4,29 @@
       v-model="createDialog"
       :title="$t('household.create-household')"
       :icon="$globals.icons.household"
-      @submit="createHousehold(createHouseholdForm.data)"
     >
       <template #activator> </template>
       <v-card-text>
-        <v-select
-          v-if="groups"
-          v-model="createHouseholdForm.data.groupId"
-          :items="groups"
-          rounded
-          class="rounded-lg"
-          item-text="name"
-          item-value="id"
-          :return-object="false"
-          filled
-          :label="$tc('household.household-group')"
-          :rules="[validators.required]"
-        />
-        <AutoForm v-model="createHouseholdForm.data" :update-mode="updateMode" :items="createHouseholdForm.items" />
+        <v-form ref="refNewHouseholdForm">
+          <v-select
+            v-if="groups"
+            v-model="createHouseholdForm.data.groupId"
+            :items="groups"
+            rounded
+            class="rounded-lg"
+            item-text="name"
+            item-value="id"
+            :return-object="false"
+            filled
+            :label="$tc('household.household-group')"
+            :rules="[validators.required]"
+          />
+          <AutoForm v-model="createHouseholdForm.data" :update-mode="updateMode" :items="createHouseholdForm.items" />
+        </v-form>
       </v-card-text>
+      <template #custom-card-action>
+        <BaseButton type="submit" @click="handleCreateSubmit"> {{ $t("general.create") }} </BaseButton>
+      </template>
     </BaseDialog>
 
     <BaseDialog
@@ -63,20 +67,27 @@
           {{ item.webhooks.length > 0 ? $t("general.yes") : $t("general.no") }}
         </template>
         <template #item.actions="{ item }">
-          <v-btn
-            :disabled="item && item.users.length > 0"
-            class="mr-1"
-            icon
-            color="error"
-            @click.stop="
-              confirmDialog = true;
-              deleteTarget = item.id;
-            "
-          >
-            <v-icon>
-              {{ $globals.icons.delete }}
-            </v-icon>
-          </v-btn>
+          <v-tooltip bottom :disabled="!(item && item.users.length > 0)">
+            <template #activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on" >
+                <v-btn
+                  :disabled="item && item.users.length > 0"
+                  class="mr-1"
+                  icon
+                  color="error"
+                  @click.stop="
+                    confirmDialog = true;
+                    deleteTarget = item.id;
+                  "
+                >
+                  <v-icon>
+                    {{ $globals.icons.delete }}
+                  </v-icon>
+                </v-btn>
+              </div>
+            </template>
+            <span>{{ $tc("admin.household-delete-note") }}</span>
+          </v-tooltip>
         </template>
       </v-data-table>
       <v-divider></v-divider>
@@ -85,23 +96,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, useContext, useRouter } from "@nuxtjs/composition-api";
+import { defineComponent, reactive, ref, toRefs, useContext, useRouter } from "@nuxtjs/composition-api";
 import { fieldTypes } from "~/composables/forms";
 import { useGroups } from "~/composables/use-groups";
-import { useHouseholds } from "~/composables/use-households";
+import { useAdminHouseholds } from "~/composables/use-households";
 import { validators } from "~/composables/use-validators";
 import { HouseholdInDB } from "~/lib/api/types/household";
+import { VForm } from "~/types/vuetify";
 
 export default defineComponent({
   layout: "admin",
   setup() {
     const { i18n } = useContext();
     const { groups } = useGroups();
-    const { households, refreshAllHouseholds, deleteHousehold, createHousehold } = useHouseholds();
+    const { households, refreshAllHouseholds, deleteHousehold, createHousehold } = useAdminHouseholds();
+    const refNewHouseholdForm = ref<VForm | null>(null);
 
     const state = reactive({
       createDialog: false,
       confirmDialog: false,
+      loading: false,
       deleteTarget: 0,
       search: "",
       headers: [
@@ -146,14 +160,24 @@ export default defineComponent({
       router.push(`/admin/manage/households/${item.id}`);
     }
 
+    async function handleCreateSubmit() {
+      if (!refNewHouseholdForm.value?.validate()) {
+        return;
+      }
+
+      state.createDialog = false;
+      await createHousehold(state.createHouseholdForm.data);
+    }
+
     return {
         ...toRefs(state),
+        refNewHouseholdForm,
         groups,
         households,
         validators,
         refreshAllHouseholds,
         deleteHousehold,
-        createHousehold,
+        handleCreateSubmit,
         openDialog,
         handleRowClick,
     };

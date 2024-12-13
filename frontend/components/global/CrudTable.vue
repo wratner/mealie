@@ -44,6 +44,8 @@
       item-key="id"
       :show-select="bulkActions.length > 0"
       :headers="activeHeaders"
+      :sort-by="initialSort"
+      :sort-desc="initialSortDesc"
       :items="data || []"
       :items-per-page="15"
       :search="search"
@@ -97,6 +99,8 @@ export interface TableHeaders {
   value: string;
   show: boolean;
   align?: string;
+  sortable?: boolean;
+  sort?: (a: any, b: any) => number;
 }
 
 export interface BulkAction {
@@ -125,6 +129,14 @@ export default defineComponent({
     bulkActions: {
       type: Array as () => BulkAction[],
       default: () => [],
+    },
+    initialSort: {
+      type: String,
+      default: "id",
+    },
+    initialSortDesc: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, context) {

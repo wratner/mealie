@@ -11,7 +11,7 @@ SQLite is a popular, open source, self-contained, zero-configuration database th
 ```yaml
 services:
   mealie:
-    image: ghcr.io/mealie-recipes/mealie:v1.12.0 # (3)
+    image: ghcr.io/mealie-recipes/mealie:v2.3.0 # (3)
     container_name: mealie
     restart: always
     ports:
@@ -24,12 +24,10 @@ services:
       - mealie-data:/app/data/
     environment:
       # Set Backend ENV Variables Here
-      ALLOW_SIGNUP: false
+      ALLOW_SIGNUP: "false"
       PUID: 1000
       PGID: 1000
       TZ: America/Anchorage
-      MAX_WORKERS: 1
-      WEB_CONCURRENCY: 1
       BASE_URL: https://mealie.yourdomain.com
 
 volumes:

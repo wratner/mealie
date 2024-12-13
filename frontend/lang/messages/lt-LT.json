@@ -182,6 +182,7 @@
     "date": "Data",
     "id": "Id",
     "owner": "Savininkas",
+    "change-owner": "Change Owner",
     "date-added": "Įkėlimo data",
     "none": "Nėra",
     "run": "Paleisti",
@@ -212,7 +213,11 @@
     "clipboard-copy-failure": "Failed to copy to the clipboard.",
     "confirm-delete-generic-items": "Are you sure you want to delete the following items?",
     "organizers": "Organizers",
-    "caution": "Caution"
+    "caution": "Caution",
+    "show-advanced": "Show Advanced",
+    "add-field": "Add Field",
+    "date-created": "Date Created",
+    "date-updated": "Date Updated"
   },
   "group": {
     "are-you-sure-you-want-to-delete-the-group": "Ar tikrai norite ištrinti <b>{groupName}<b/>?",
@@ -241,13 +246,14 @@
     "manage-members": "Tvarkyti narius",
     "manage-members-description": "Manage the permissions of the members in your household. {manage} allows the user to access the data-management page, and {invite} allows the user to generate invitation links for other users. Group owners cannot change their own permissions.",
     "manage": "Tvarkyti",
+    "manage-household": "Manage Household",
     "invite": "Pakviesti",
     "looking-to-update-your-profile": "Ar norėtumėte atnaujinti savo profilį?",
     "default-recipe-preferences-description": "Tai yra numatytosios parinktys, kai jūsų grupėje sukuriamas naujas receptas. Atskiriems receptams jie gali būti keičiami per receptų nustatymų meniu.",
     "default-recipe-preferences": "Numatytosios receptų parinktys",
     "group-preferences": "Grupės nustatymai",
     "private-group": "Privati grupė",
-    "private-group-description": "Setting your group to private will default all public view options to default. This overrides any individual households or recipes public view settings.",
+    "private-group-description": "Setting your group to private will disable all public view options. This overrides any individual public view settings",
     "enable-public-access": "Enable Public Access",
     "enable-public-access-description": "Make group recipes public by default, and allow visitors to view recipes without logging-in",
     "allow-users-outside-of-your-group-to-see-your-recipes": "Leiskite vartotojams, nepriskirtiemsjūsų grupei, matyti jūsų receptus",
@@ -285,7 +291,9 @@
     "admin-household-management-text": "Changes to this household will be reflected immediately.",
     "household-id-value": "Household Id: {0}",
     "private-household": "Private Household",
-    "private-household-description": "Setting your household to private will default all public view options to default. This overrides any individual recipes public view settings.",
+    "private-household-description": "Setting your household to private will disable all public view options. This overrides any individual public view settings",
+    "lock-recipe-edits-from-other-households": "Lock recipe edits from other households",
+    "lock-recipe-edits-from-other-households-description": "When enabled only users in your household can edit recipes created by your household",
     "household-recipe-preferences": "Household Recipe Preferences",
     "default-recipe-preferences-description": "These are the default settings when a new recipe is created in your household. These can be changed for individual recipes in the recipe settings menu.",
     "allow-users-outside-of-your-household-to-see-your-recipes": "Allow users outside of your household to see your recipes",
@@ -312,6 +320,10 @@
     "mealplan-settings": "Mitybos plano nustatymai",
     "mealplan-update-failed": "Mitybos plano atnaujinti nepavyko",
     "mealplan-updated": "Mitybos planas atnaujintas",
+    "mealplan-households-description": "If no household is selected, recipes can be added from any household",
+    "any-category": "Any Category",
+    "any-tag": "Any Tag",
+    "any-household": "Any Household",
     "no-meal-plan-defined-yet": "Nėra nustatytų mitybos planų",
     "no-meal-planned-for-today": "Nėra šios dienos mitybos plano",
     "numberOfDays-hint": "Number of days on page load",
@@ -344,7 +356,7 @@
     "for-type-meal-types": "{0} patiekalų tipams",
     "meal-plan-rules": "Valgių planavimo taisyklės",
     "new-rule": "Nauja taisyklė",
-    "meal-plan-rules-description": "You can create rules for auto selecting recipes for your meal plans. These rules are used by the server to determine the random pool of recipes to select from when creating meal plans. Note that if rules have the same day/type constraints then the categories of the rules will be merged. In practice, it's unnecessary to create duplicate rules, but it's possible to do so.",
+    "meal-plan-rules-description": "You can create rules for auto selecting recipes for your meal plans. These rules are used by the server to determine the random pool of recipes to select from when creating meal plans. Note that if rules have the same day/type constraints then the rule filters will be merged. In practice, it's unnecessary to create duplicate rules, but it's possible to do so.",
     "new-rule-description": "Kurdami naują taisyklę valgių planui galite įvesti apribojimą konkrečiai savaitės dienai ar valgio tipui. Jei norite pritaikyti taisyklę visoms dienoms ar visiems valgių tipams, pasirinkite \"Bet kuri (-is)\".",
     "recipe-rules": "Recepto taisyklės",
     "applies-to-all-days": "Galioja visoms dienoms",
@@ -419,6 +431,7 @@
     "paste-in-your-recipe-data-each-line-will-be-treated-as-an-item-in-a-list": "Įklijuokite receptą. Kiekviena nauja eilutė bus traktuojama kaip sąrašo elementas",
     "recipe-markup-specification": "Recepto žymėjimų specifikacija",
     "recipe-url": "Recepto nuoroda",
+    "recipe-html-or-json": "Recipe HTML or JSON",
     "upload-a-recipe": "Įkelti receptą",
     "upload-individual-zip-file": "Įkelkite .zip failą, eksportuotą iš kitos \"Mealie\" sistemos.",
     "url-form-hint": "Nukopijuokite ir įklijuokite nuorodą iš mėgstamų receptų svetainės",
@@ -453,6 +466,7 @@
     "calories-suffix": "kalorijos",
     "carbohydrate-content": "Angliavandeniai",
     "categories": "Kategorijos",
+    "cholesterol-content": "Cholesterol",
     "comment-action": "Komentuoti",
     "comment": "Komentaras",
     "comments": "Komentarai",
@@ -499,6 +513,7 @@
     "recipe-updated": "Receptas atnaujintas",
     "remove-from-favorites": "Išimti iš mėgstamiausių",
     "remove-section": "Ištrinti skiltį",
+    "saturated-fat-content": "Saturated fat",
     "save-recipe-before-use": "Prieš naudodami išsaugokite receptą",
     "section-title": "Skilties pavadinimas",
     "servings": "Porcijos",
@@ -509,7 +524,9 @@
     "sugar-content": "Cukrus",
     "title": "Pavadinimas",
     "total-time": "Bendras gaminimo laikas",
+    "trans-fat-content": "Trans-fat",
     "unable-to-delete-recipe": "Recepto ištrinti nepavyko",
+    "unsaturated-fat-content": "Unsaturated fat",
     "no-recipe": "Nera recepto",
     "locked-by-owner": "Užrakinta savininko",
     "join-the-conversation": "Prisijungti prie susirašinėjimo",
@@ -597,10 +614,16 @@
     "scrape-recipe-description": "Nuskaityti receptą iš URL nuorodos. Pateikite recepto nuorodą, ir Mealie pabandys paimti recepto informaciją iš šios svetainės ir patalpinti ją jūsų kolekcijoje.",
     "scrape-recipe-have-a-lot-of-recipes": "Have a lot of recipes you want to scrape at once?",
     "scrape-recipe-suggest-bulk-importer": "Try out the bulk importer",
+    "scrape-recipe-have-raw-html-or-json-data": "Have raw HTML or JSON data?",
+    "scrape-recipe-you-can-import-from-raw-data-directly": "You can import from raw data directly",
     "import-original-keywords-as-tags": "Įkelti pradinius raktažodžius kaip žymas",
     "stay-in-edit-mode": "Toliau redaguoti",
     "import-from-zip": "Įkelti iš .ZIP archyvo",
     "import-from-zip-description": "Įkelti atskirą receptą, išsaugotą iš Mealie.",
+    "import-from-html-or-json": "Import from HTML or JSON",
+    "import-from-html-or-json-description": "Import a single recipe from raw HTML or JSON. This is useful if you have a recipe from a site that Mealie can't scrape normally, or from some other external source.",
+    "json-import-format-description-colon": "To import via JSON, it must be in valid format:",
+    "json-editor": "JSON Editor",
     "zip-files-must-have-been-exported-from-mealie": ".ZIP archyvai privalo būti išsaugoti iš Mealie",
     "create-a-recipe-by-uploading-a-scan": "Sukurti receptą iš nuskenuoto dokumento.",
     "upload-a-png-image-from-a-recipe-book": "Įkelti .PNG nuotrauką iš receptų knygos",
@@ -638,7 +661,8 @@
       "missing-unit": "Create missing unit: {unit}",
       "missing-food": "Create missing food: {food}",
       "no-food": "No Food"
-    }
+    },
+    "reset-servings-count": "Reset Servings Count"
   },
   "search": {
     "advanced-search": "Išplėstinė paieška",
@@ -649,6 +673,7 @@
     "or": "Arba",
     "has-any": "Bet kuris",
     "has-all": "Visi",
+    "clear-selection": "Clear Selection",
     "results": "Rezultatai",
     "search": "Ieškoti",
     "search-mealie": "Pradėti ieškoti \"Mealie\" (spauskite /)",
@@ -987,6 +1012,7 @@
     "administrator": "Administratorius",
     "user-can-invite-other-to-group": "User can invite others to group",
     "user-can-manage-group": "Naudotojas gali valdyti grupę",
+    "user-can-manage-household": "User can manage household",
     "user-can-organize-group-data": "Naudotojas gali tvarkyti grupės duomenis",
     "enable-advanced-features": "Įjungti pažangias funkcijas",
     "it-looks-like-this-is-your-first-time-logging-in": "It looks like this is your first time logging in.",
@@ -1241,7 +1267,13 @@
       "here-are-a-few-things-to-help-you-get-started": "Here are a few things to help you get started with Mealie",
       "restore-from-v1-backup": "Have a backup from a previous instance of Mealie v1? You can restore it here.",
       "manage-profile-or-get-invite-link": "Manage your own profile, or grab an invite link to share with others."
-    }
+    },
+    "debug-openai-services": "Debug OpenAI Services",
+    "debug-openai-services-description": "Use this page to debug OpenAI services. You can test your OpenAI connection and see the results here. If you have image services enabled, you can also provide an image.",
+    "run-test": "Run Test",
+    "test-results": "Test Results",
+    "group-delete-note": "Groups with users or households cannot be deleted",
+    "household-delete-note": "Households with users cannot be deleted"
   },
   "profile": {
     "welcome-user": "👋 Welcome, {0}!",
@@ -1294,7 +1326,7 @@
   },
   "cookbook": {
     "cookbooks": "Receptų knygos",
-    "description": "Receptų knygos yra dar vienas receptų organizavimo būdas. Sukūrus receptų knygą ji bus rodoma šoniniame meniu, ir visi receptai su pasirinktomis žymomis ir kategorijomis bus pateikiami jos viduje.",
+    "description": "Cookbooks are another way to organize recipes by creating cross sections of recipes, organizers, and other filters. Creating a cookbook will add an entry to the side-bar and all the recipes with the filters chosen will be displayed in the cookbook.",
     "public-cookbook": "Vieša receptų knyga",
     "public-cookbook-description": "Viešos receptų knygos gali būti bendrinamos su Mealie paskyros neturinčiais naudotojais ir bus rodomos jūsų grupių puslapyje.",
     "filter-options": "Filtro parinktys",
@@ -1307,5 +1339,28 @@
     "household-cookbook-name": "{0} Cookbook {1}",
     "create-a-cookbook": "Create a Cookbook",
     "cookbook": "Cookbook"
+  },
+  "query-filter": {
+    "logical-operators": {
+      "and": "AND",
+      "or": "OR"
+    },
+    "relational-operators": {
+      "equals": "equals",
+      "does-not-equal": "does not equal",
+      "is-greater-than": "is greater than",
+      "is-greater-than-or-equal-to": "is greater than or equal to",
+      "is-less-than": "is less than",
+      "is-less-than-or-equal-to": "is less than or equal to"
+    },
+    "relational-keywords": {
+      "is": "is",
+      "is-not": "is not",
+      "is-one-of": "is one of",
+      "is-not-one-of": "is not one of",
+      "contains-all-of": "contains all of",
+      "is-like": "is like",
+      "is-not-like": "is not like"
+    }
   }
 }

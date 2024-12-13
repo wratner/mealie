@@ -1,21 +1,22 @@
-import { BaseCRUDAPI } from "../base/base-clients";
+import { BaseCRUDAPIReadOnly } from "../base/base-clients";
+import { PaginationData } from "../types/non-generated";
+import { QueryValue } from "../base/route";
 import { UserOut } from "~/lib/api/types/user";
 import {
-  HouseholdCreate,
   HouseholdInDB,
-  UpdateHouseholdAdmin,
   HouseholdStatistics,
   ReadHouseholdPreferences,
   SetPermissions,
   UpdateHouseholdPreferences,
   CreateInviteToken,
   ReadInviteToken,
+  HouseholdSummary,
 } from "~/lib/api/types/household";
 
 const prefix = "/api";
 
 const routes = {
-  households: `${prefix}/admin/households`,
+  households: `${prefix}/groups/households`,
   householdsSelf: `${prefix}/households/self`,
   members: `${prefix}/households/members`,
   permissions: `${prefix}/households/permissions`,
@@ -24,13 +25,13 @@ const routes = {
   statistics: `${prefix}/households/statistics`,
   invitation: `${prefix}/households/invitations`,
 
-  householdsId: (id: string | number) => `${prefix}/admin/households/${id}`,
+  householdsId: (id: string | number) => `${prefix}/groups/households/${id}`,
 };
 
-export class HouseholdAPI extends BaseCRUDAPI<HouseholdCreate, HouseholdInDB, UpdateHouseholdAdmin> {
+export class HouseholdAPI extends BaseCRUDAPIReadOnly<HouseholdSummary> {
   baseRoute = routes.households;
   itemRoute = routes.householdsId;
-  /** Returns the Group Data for the Current User
+  /** Returns the Household Data for the Current User
    */
   async getCurrentUserHousehold() {
     return await this.requests.get<HouseholdInDB>(routes.householdsSelf);
@@ -49,8 +50,8 @@ export class HouseholdAPI extends BaseCRUDAPI<HouseholdCreate, HouseholdInDB, Up
     return await this.requests.post<ReadInviteToken>(routes.invitation, payload);
   }
 
-  async fetchMembers() {
-    return await this.requests.get<UserOut[]>(routes.members);
+  async fetchMembers(page = 1, perPage = -1, params = {} as Record<string, QueryValue>) {
+    return await this.requests.get<PaginationData<UserOut>>(routes.members, { page, perPage, ...params });
   }
 
   async setMemberPermissions(payload: SetPermissions) {

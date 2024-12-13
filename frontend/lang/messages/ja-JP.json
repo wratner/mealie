@@ -182,6 +182,7 @@
     "date": "日付",
     "id": "Id",
     "owner": "所有者",
+    "change-owner": "所有者の変更",
     "date-added": "追加日",
     "none": "なし",
     "run": "実行",
@@ -212,7 +213,11 @@
     "clipboard-copy-failure": "クリップボードにコピーできませんでした",
     "confirm-delete-generic-items": "次のアイテムを本当に削除しますか？",
     "organizers": "収納",
-    "caution": "注意"
+    "caution": "注意",
+    "show-advanced": "詳細を表示",
+    "add-field": "フィールドを追加",
+    "date-created": "作成日",
+    "date-updated": "更新日"
   },
   "group": {
     "are-you-sure-you-want-to-delete-the-group": "<b>{groupName}<b/> を削除しますか？",
@@ -241,13 +246,14 @@
     "manage-members": "メンバーの管理",
     "manage-members-description": "世帯のメンバーの権限を管理します。{manage} を使用すると、ユーザーはデータ管理ページにアクセスでき、{invite} を使用すると、他のユーザーへの招待リンクを生成できます。グループ所有者は、自分の権限を変更することはできません。",
     "manage": "管理",
+    "manage-household": "世帯の管理",
     "invite": "招待",
     "looking-to-update-your-profile": "プロフィールを更新しますか？",
     "default-recipe-preferences-description": "グループ内で新しいレシピが作成された場合のデフォルト設定です。 これらはレシピ設定メニューで個々のレシピで変更できます。",
     "default-recipe-preferences": "デフォルトのレシピ設定",
     "group-preferences": "グループ設定",
     "private-group": "非公開グループ",
-    "private-group-description": "グループを非公開に設定すると、すべての公開表示オプションが既定値に設定されます。これにより、個々の世帯またはレシピの公開表示設定が上書きされます。",
+    "private-group-description": "グループを非公開に設定すると、すべての公開表示オプションが無効になります。これにより、個々の公開表示設定が上書きされます。",
     "enable-public-access": "公開アクセスを有効にする",
     "enable-public-access-description": "デフォルトでグループレシピを公開し、訪問者がログインせずにレシピを表示できるようにします",
     "allow-users-outside-of-your-group-to-see-your-recipes": "グループ外のユーザーにレシピの表示を許可する",
@@ -285,7 +291,9 @@
     "admin-household-management-text": "この世帯への変更はすぐに反映されます。",
     "household-id-value": "世帯ID: {0}",
     "private-household": "非公開世帯",
-    "private-household-description": "非公開に設定すると、すべての公開ビューオプションが既定値に設定されます。これは、個々のレシピの公開ビュー設定を上書きします。",
+    "private-household-description": "世帯を非公開に設定すると、すべての公開表示オプションが無効になります。これは、個々の公開表示設定よりも優先されます。",
+    "lock-recipe-edits-from-other-households": "他の世帯からのレシピの編集をロックする",
+    "lock-recipe-edits-from-other-households-description": "有効にすると、あなたの世帯のユーザーのみがあなたの世帯で作成されたレシピを編集できます",
     "household-recipe-preferences": "家庭用レシピ設定",
     "default-recipe-preferences-description": "世帯で新しいレシピが作成された場合、これらがデフォルト設定になります。 これらはレシピ設定メニューで個々のレシピで変更できます。",
     "allow-users-outside-of-your-household-to-see-your-recipes": "世帯外のユーザーがレシピを見ることを許可する",
@@ -312,6 +320,10 @@
     "mealplan-settings": "献立設定",
     "mealplan-update-failed": "献立の更新に失敗しました",
     "mealplan-updated": "献立を更新しました",
+    "mealplan-households-description": "世帯が選択されていない場合は、どの世帯からでもレシピを追加できます",
+    "any-category": "すべてのカテゴリー",
+    "any-tag": "すべてのタグ",
+    "any-household": "すべての世帯",
     "no-meal-plan-defined-yet": "食事プランはまだ定義されていません",
     "no-meal-planned-for-today": "今日の食事プランはありません",
     "numberOfDays-hint": "ページ読み込みの日数",
@@ -344,7 +356,7 @@
     "for-type-meal-types": "{0} の食事の種類",
     "meal-plan-rules": "食事プランのルール",
     "new-rule": "新しいルール",
-    "meal-plan-rules-description": "食事計画のレシピを自動的に選択するためのルールを作成できます。 これらのルールは、食事計画を作成するときから選択するレシピのランダムプールを決定するためにサーバーによって使用されます。 ルールが同じ日/型の制約を持つ場合、ルールのカテゴリが統合されることに注意してください。 実際には、重複したルールを作成する必要はありませんが、そうすることは可能です。",
+    "meal-plan-rules-description": "食事プランのレシピを自動選択するためのルールを作成できます。これらのルールは、食事プランを作成するときに選択するレシピのランダムプールを決定するためにサーバーによって使用されます。ルールに同じ日/タイプの制約がある場合は、ルールフィルターが結合されることに注意してください。実際には、重複したルールを作成する必要はありませんが、重複して作成することは可能です。",
     "new-rule-description": "食事プランの新しいルールを作成する場合は、特定の曜日および/または特定の種類の食事に適用されるルールを制限できます。 すべての日またはすべての食事タイプにルールを適用するには、その日または食事タイプのすべての可能な値に適用されるルールを \"すべて\" に設定できます。",
     "recipe-rules": "レシピのルール",
     "applies-to-all-days": "すべての日に適用",
@@ -419,6 +431,7 @@
     "paste-in-your-recipe-data-each-line-will-be-treated-as-an-item-in-a-list": "レシピデータを貼り付けます。各行はリスト内のアイテムとして扱われます。",
     "recipe-markup-specification": "レシピマークアップ仕様",
     "recipe-url": "レシピのURL",
+    "recipe-html-or-json": "レシピ HTML または JSON",
     "upload-a-recipe": "レシピのアップロード",
     "upload-individual-zip-file": "別のMealieインスタンスからエクスポートされた個別の.zipファイルをアップロードします。",
     "url-form-hint": "お気に入りのレシピサイトからリンクをコピーして貼り付け",
@@ -453,6 +466,7 @@
     "calories-suffix": "キロカロリー",
     "carbohydrate-content": "炭水化物",
     "categories": "カテゴリ",
+    "cholesterol-content": "コレステロール",
     "comment-action": "コメント",
     "comment": "コメント",
     "comments": "コメント",
@@ -499,6 +513,7 @@
     "recipe-updated": "レシピを更新しました",
     "remove-from-favorites": "お気に入りから削除",
     "remove-section": "セクションを削除",
+    "saturated-fat-content": "飽和脂肪酸",
     "save-recipe-before-use": "使用する前にレシピを保存する",
     "section-title": "手順のタイトル",
     "servings": "人前",
@@ -509,7 +524,9 @@
     "sugar-content": "糖質",
     "title": "タイトル",
     "total-time": "合計時間",
+    "trans-fat-content": "トランス脂肪酸",
     "unable-to-delete-recipe": "レシピを削除できません",
+    "unsaturated-fat-content": "不飽和脂肪",
     "no-recipe": "レシピがありません",
     "locked-by-owner": "所有者によってロックされています",
     "join-the-conversation": "会話に参加する",
@@ -597,10 +614,16 @@
     "scrape-recipe-description": "URLからレシピをスクレイプします。 スクレイプしたいサイトのURLを入力してください。Mealieはそのサイトからレシピを抽出してコレクションに追加しようとします。",
     "scrape-recipe-have-a-lot-of-recipes": "一度に読み込みたいレシピがたくさんありますか？",
     "scrape-recipe-suggest-bulk-importer": "一括インポートを試す",
+    "scrape-recipe-have-raw-html-or-json-data": "生の HTML または JSON データをお持ちですか？",
+    "scrape-recipe-you-can-import-from-raw-data-directly": "生データから直接インポートできます",
     "import-original-keywords-as-tags": "元のキーワードをタグとしてインポート",
     "stay-in-edit-mode": "編集モードを維持",
     "import-from-zip": "Zipからインポート",
     "import-from-zip-description": "別のMealieインスタンスからエクスポートされた1つのレシピをインポートします。",
+    "import-from-html-or-json": "HTML または JSON からインポート",
+    "import-from-html-or-json-description": "生の HTML または JSON から単一のレシピをインポートします。これは、Mealieが通常スクレイピングできないサイトや他の外部ソースからのレシピがある場合に便利です。",
+    "json-import-format-description-colon": "JSON経由でインポートするには、有効な形式である必要があります:",
+    "json-editor": "JSONエディタ",
     "zip-files-must-have-been-exported-from-mealie": ".zipファイルはMealieからエクスポートされている必要があります",
     "create-a-recipe-by-uploading-a-scan": "スキャンをアップロードしてレシピを作成します。",
     "upload-a-png-image-from-a-recipe-book": "レシピ本から png 画像をアップロード",
@@ -638,7 +661,8 @@
       "missing-unit": "欠けている単位を作成: {unit}",
       "missing-food": "欠けている食材を作成: {food}",
       "no-food": "食材はありません"
-    }
+    },
+    "reset-servings-count": "サービング数をリセット"
   },
   "search": {
     "advanced-search": "詳細検索",
@@ -649,6 +673,7 @@
     "or": "または",
     "has-any": "いずれかの",
     "has-all": "すべての",
+    "clear-selection": "選択を解除",
     "results": "検索結果",
     "search": "検索",
     "search-mealie": "Mealieを検索 (/キーを押す)",
@@ -987,6 +1012,7 @@
     "administrator": "管理者",
     "user-can-invite-other-to-group": "ユーザーは他のユーザーをグループに招待できます",
     "user-can-manage-group": "ユーザーはグループを管理できます",
+    "user-can-manage-household": "ユーザーは世帯を管理することができます",
     "user-can-organize-group-data": "ユーザーはグループデータを整理できます",
     "enable-advanced-features": "高度な機能を有効にする",
     "it-looks-like-this-is-your-first-time-logging-in": "初めてのログインのようですね。",
@@ -1241,7 +1267,13 @@
       "here-are-a-few-things-to-help-you-get-started": "Mealieを始めるのに役立つことがいくつかあります",
       "restore-from-v1-backup": "Mealie v1以前のインスタンスからのバックアップはありますか？ここで復元できます。",
       "manage-profile-or-get-invite-link": "自分のプロフィールを管理するか、招待リンクを取得して他の人と共有します。"
-    }
+    },
+    "debug-openai-services": "OpenAIサービスのデバッグ",
+    "debug-openai-services-description": "このページを使用して、OpenAIサービスをデバッグします。ここでOpenAI接続をテストし、結果を確認できます。画像サービスが有効になっている場合は、画像を提供することもできます。",
+    "run-test": "テスト実行",
+    "test-results": "テスト結果",
+    "group-delete-note": "ユーザーまたは世帯を含むグループは削除できません",
+    "household-delete-note": "ユーザーがいる世帯は削除できません"
   },
   "profile": {
     "welcome-user": "👋 ようこそ, {0}!",
@@ -1294,7 +1326,7 @@
   },
   "cookbook": {
     "cookbooks": "料理本",
-    "description": "料理本は、レシピの見本とタグを作成してレシピを整理するもう 1 つの方法です。料理本を作成すると、サイドバーにエントリが追加され、選択したタグとカテゴリを持つすべてのレシピが料理本に表示されます。",
+    "description": "料理本は、レシピのクロスセクション、オーガナイザー、その他のフィルターを作成してレシピを整理するもう 1 つの方法です。料理本を作成するとサイドバーにエントリが追加され、選択したフィルターが適用されたすべてのレシピが料理本に表示されます。",
     "public-cookbook": "公開料理本",
     "public-cookbook-description": "公開料理本は非Mealieユーザーと共有でき、グループページに表示されます。",
     "filter-options": "フィルタオプション",
@@ -1307,5 +1339,28 @@
     "household-cookbook-name": "{0} 料理本 {1}",
     "create-a-cookbook": "料理本を作成",
     "cookbook": "料理本"
+  },
+  "query-filter": {
+    "logical-operators": {
+      "and": "AND",
+      "or": "OR"
+    },
+    "relational-operators": {
+      "equals": "等しい",
+      "does-not-equal": "等しくない",
+      "is-greater-than": "より大きい",
+      "is-greater-than-or-equal-to": "以上",
+      "is-less-than": "より小さい",
+      "is-less-than-or-equal-to": "以下"
+    },
+    "relational-keywords": {
+      "is": "は",
+      "is-not": "ではない",
+      "is-one-of": "のうちの1つです",
+      "is-not-one-of": "のひとつではない",
+      "contains-all-of": "すべてを含む",
+      "is-like": "次のようなものです",
+      "is-not-like": "というわけではありません"
+    }
   }
 }

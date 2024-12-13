@@ -182,6 +182,7 @@
     "date": "Päivämäärä",
     "id": "Id",
     "owner": "Omistaja",
+    "change-owner": "Change Owner",
     "date-added": "Lisätty",
     "none": "Tyhjä",
     "run": "Suorita",
@@ -212,7 +213,11 @@
     "clipboard-copy-failure": "Kopioiminen leikepöydälle epäonnistui.",
     "confirm-delete-generic-items": "Haluatko varmasti poistaa seuraavat kohteet?",
     "organizers": "Järjestäjät",
-    "caution": "Huomio"
+    "caution": "Huomio",
+    "show-advanced": "Show Advanced",
+    "add-field": "Add Field",
+    "date-created": "Date Created",
+    "date-updated": "Date Updated"
   },
   "group": {
     "are-you-sure-you-want-to-delete-the-group": "Haluatko varmasti poistaa ryhmän <b>{groupName}<b/>?",
@@ -241,13 +246,14 @@
     "manage-members": "Hallitse jäseniä",
     "manage-members-description": "Hallitse kotitaloutesi jäsenten oikeuksia. {manage} antaa jäsenelle pääsyn tietojenkäsittelysivulle, ja {invite} antaa käyttäjän luoda kutsulinkkejä muille käyttäjille. Ryhmien omistajat eivät voi muuttaa omia oikeuksiaan.",
     "manage": "Hallitse",
+    "manage-household": "Manage Household",
     "invite": "Kutsu",
     "looking-to-update-your-profile": "Haluatko päivittää käyttäjäsivusi?",
     "default-recipe-preferences-description": "Nämä ovat reseptin oletusasetukset. Näitä voi muuttaa yksittäisille resepteille reseptin asetuksissa.",
     "default-recipe-preferences": "Oletusreseptiasetukset",
     "group-preferences": "Ryhmän oletusasetukset",
     "private-group": "Yksityinen ryhmä",
-    "private-group-description": "Ryhmäsi asettaminen yksityiseksi muuttaa kaikki julkisen näkymän asetukset oletusarvoiksi. Tämä ajaa kaikkien yksittäisten kotitalouksien ja reseptien julkisen näkymien asetusten yli.",
+    "private-group-description": "Setting your group to private will disable all public view options. This overrides any individual public view settings",
     "enable-public-access": "Salli julkinen käyttö",
     "enable-public-access-description": "Julkista ryhmän reseptit automaattisesti ja anna vierailijoiden nähdä reseptit kirjautumatta sisään",
     "allow-users-outside-of-your-group-to-see-your-recipes": "Anna muiden kuin ryhmäsi jäsenten nähdä reseptisi",
@@ -285,7 +291,9 @@
     "admin-household-management-text": "Muutokset tähän kotitalouteen astuvat välittömästi voimaan.",
     "household-id-value": "Kotitalouden tunniste: {0}",
     "private-household": "Yksityinen Kotitalous",
-    "private-household-description": "Kotitalouden asettaminen yksityiseksi muuttaa kaikki julkisen näkymän asetukset oletusarvoisiksi. Tämä ohittaa yksittäisten reseptien julkisten näkymien asetukset.",
+    "private-household-description": "Setting your household to private will disable all public view options. This overrides any individual public view settings",
+    "lock-recipe-edits-from-other-households": "Lock recipe edits from other households",
+    "lock-recipe-edits-from-other-households-description": "When enabled only users in your household can edit recipes created by your household",
     "household-recipe-preferences": "Kotitalouksien reseptiasetukset",
     "default-recipe-preferences-description": "Tässä on kotitaloutesi uuden reseptin oletusasetukset. Näitä voi muuttaa yksittäisten reseptien osalta reseptin asetuksissa.",
     "allow-users-outside-of-your-household-to-see-your-recipes": "Salli kotitalouden ulkopuolisten käyttäjien nähdä reseptit",
@@ -312,6 +320,10 @@
     "mealplan-settings": "Ateriasuunnitelman asetukset",
     "mealplan-update-failed": "Ateriasuunnitelman päivittäminen epäonnistui",
     "mealplan-updated": "Ateriasuunnitelma päivitetty",
+    "mealplan-households-description": "If no household is selected, recipes can be added from any household",
+    "any-category": "Any Category",
+    "any-tag": "Any Tag",
+    "any-household": "Any Household",
     "no-meal-plan-defined-yet": "Ateriasuunnitelmaa ei ole vielä määritelty",
     "no-meal-planned-for-today": "Ei ateriasuunnitelmaa tälle päivälle",
     "numberOfDays-hint": "Number of days on page load",
@@ -344,7 +356,7 @@
     "for-type-meal-types": "kaikille {0} ateriatyypeille",
     "meal-plan-rules": "Ateriasuunnitelman määritykset",
     "new-rule": "Uusi sääntö",
-    "meal-plan-rules-description": "Voit luoda sääntöjä reseptien automaattiseen valitsemiseen ateriasuunnitelmia varten. Palvelin käyttää näitä sääntöjä määrittääkseen satunnaisen valikoiman reseptejä, joista valita luodessaan ateriasuunnitelmia. Huomaa, että jos säännöillä on samat päivä-/tyyppirajoitukset, sääntöjen luokat yhdistetään. Käytännössä ei ole tarpeen luoda päällekkäisiä sääntöjä, mutta se on mahdollista.",
+    "meal-plan-rules-description": "You can create rules for auto selecting recipes for your meal plans. These rules are used by the server to determine the random pool of recipes to select from when creating meal plans. Note that if rules have the same day/type constraints then the rule filters will be merged. In practice, it's unnecessary to create duplicate rules, but it's possible to do so.",
     "new-rule-description": "Kun luot uuden säännön ateriasuunnitelmalle, voit rajoittaa säännön koskemaan tiettyä viikonpäivää ja/tai tietyntyyppistä ateriaa. Jos haluat soveltaa sääntöä kaikkiin päiviin tai kaikkiin ateriatyyppeihin, voit asettaa säännön asetukseksi \"Mikä tahansa\", jolloin sitä sovelletaan kaikkiin mahdollisiin päivän ja/tai ateriatyypin arvoihin.",
     "recipe-rules": "Reseptimääritykset",
     "applies-to-all-days": "Sovelletaan kaikkiin päiviin",
@@ -419,6 +431,7 @@
     "paste-in-your-recipe-data-each-line-will-be-treated-as-an-item-in-a-list": "Liitä reseptitiedot. Joka riviä kohdellaan luettelon kohteena",
     "recipe-markup-specification": "Reseptin merkkimääritys",
     "recipe-url": "Reseptin URL",
+    "recipe-html-or-json": "Recipe HTML or JSON",
     "upload-a-recipe": "Lataa resepti",
     "upload-individual-zip-file": "Tuo yksittäinen pakattu kansio toisesta Mealie-ilmeentymästä.",
     "url-form-hint": "Liitä linkki lempireseptiverkkosivultasi",
@@ -453,6 +466,7 @@
     "calories-suffix": "kaloria",
     "carbohydrate-content": "Hiilihydraatti",
     "categories": "Kategoriat",
+    "cholesterol-content": "Cholesterol",
     "comment-action": "Kommentit",
     "comment": "Kommentti",
     "comments": "Kommentit",
@@ -499,6 +513,7 @@
     "recipe-updated": "Resepti päivitetty",
     "remove-from-favorites": "Poista suosikeista",
     "remove-section": "Poista osio",
+    "saturated-fat-content": "Saturated fat",
     "save-recipe-before-use": "Tallenna resepti ennen käyttöä",
     "section-title": "Osion otsikko",
     "servings": "Annokset",
@@ -509,7 +524,9 @@
     "sugar-content": "Sokeri",
     "title": "Otsikko",
     "total-time": "Kokonaisaika",
+    "trans-fat-content": "Trans-fat",
     "unable-to-delete-recipe": "Reseptiä ei voida poistaa",
+    "unsaturated-fat-content": "Unsaturated fat",
     "no-recipe": "Ei reseptiä",
     "locked-by-owner": "Omistajan lukitsema",
     "join-the-conversation": "Liity keskusteluun",
@@ -597,10 +614,16 @@
     "scrape-recipe-description": "Kaappaa resepti urlin avulla. Anna sen reseptin url-osoite, jonka haluat kaapata, ja Mealie yrittää kaapata reseptin kyseiseltä sivustolta ja lisätä sen kokoelmaasi.",
     "scrape-recipe-have-a-lot-of-recipes": "Haluatko kerätä useamman reseptin kerralla?",
     "scrape-recipe-suggest-bulk-importer": "Kokeile massasiirtotyökalua",
+    "scrape-recipe-have-raw-html-or-json-data": "Have raw HTML or JSON data?",
+    "scrape-recipe-you-can-import-from-raw-data-directly": "You can import from raw data directly",
     "import-original-keywords-as-tags": "Tuo alkuperäiset avainsanat tunnisteiksi",
     "stay-in-edit-mode": "Pysy muokkaustilassa",
     "import-from-zip": "Tuo zip-arkistosta",
     "import-from-zip-description": "Tuo yksi resepti, joka on viety toisesta Mealie-asennuksesta.",
+    "import-from-html-or-json": "Import from HTML or JSON",
+    "import-from-html-or-json-description": "Import a single recipe from raw HTML or JSON. This is useful if you have a recipe from a site that Mealie can't scrape normally, or from some other external source.",
+    "json-import-format-description-colon": "To import via JSON, it must be in valid format:",
+    "json-editor": "JSON Editor",
     "zip-files-must-have-been-exported-from-mealie": ".zip-tiedostot on täytynyt viedä Mealiesta",
     "create-a-recipe-by-uploading-a-scan": "Luo resepti lataamalla skannaus.",
     "upload-a-png-image-from-a-recipe-book": "Lataa png- kuva reseptikirjasta",
@@ -638,7 +661,8 @@
       "missing-unit": "Luo puuttuva yksikkö: {unit}",
       "missing-food": "Luo puuttuva ruoka: {food}",
       "no-food": "Ei ruokaa"
-    }
+    },
+    "reset-servings-count": "Reset Servings Count"
   },
   "search": {
     "advanced-search": "Tarkennettu haku",
@@ -649,6 +673,7 @@
     "or": "Tai",
     "has-any": "On Mikä Tahansa",
     "has-all": "On Kaikki",
+    "clear-selection": "Clear Selection",
     "results": "Tulokset",
     "search": "Hae",
     "search-mealie": "Hae Mealiestä (paina /)",
@@ -987,6 +1012,7 @@
     "administrator": "Ylläpitäjä",
     "user-can-invite-other-to-group": "Käyttäjä voi kutsua muita ryhmään",
     "user-can-manage-group": "Käyttäjä voi hallita ryhmää",
+    "user-can-manage-household": "User can manage household",
     "user-can-organize-group-data": "Käyttäjä voi järjestellä ryhmän tietoja",
     "enable-advanced-features": "Salli edistyneemmät ominaisuudet",
     "it-looks-like-this-is-your-first-time-logging-in": "Tämä vaikuttaa olevan ensimmäinen kirjautumisesi.",
@@ -1241,7 +1267,13 @@
       "here-are-a-few-things-to-help-you-get-started": "Näillä muutamilla asioilla pääset alkuun",
       "restore-from-v1-backup": "Onko sinulla varmuuskopio aiemmasta Mealie v1 -instanssista? Palauta se tästä.",
       "manage-profile-or-get-invite-link": "Hallitse profiiliasi tai hanki kutsulinkki muille."
-    }
+    },
+    "debug-openai-services": "Debug OpenAI Services",
+    "debug-openai-services-description": "Use this page to debug OpenAI services. You can test your OpenAI connection and see the results here. If you have image services enabled, you can also provide an image.",
+    "run-test": "Run Test",
+    "test-results": "Test Results",
+    "group-delete-note": "Groups with users or households cannot be deleted",
+    "household-delete-note": "Households with users cannot be deleted"
   },
   "profile": {
     "welcome-user": "👋 Tervetuloa, {0}!",
@@ -1294,7 +1326,7 @@
   },
   "cookbook": {
     "cookbooks": "Keittokirjat",
-    "description": "Keittokirjat ovat toinen tapa järjestää reseptejä luomalla poikkileikkauksia resepteistä ja tunnisteista. Keittokirjan luominen lisää merkinnän sivupalkkiin ja kaikki reseptit, joissa on valitut tunnisteet ja kategoriat, näkyvät keittokirjassa.",
+    "description": "Cookbooks are another way to organize recipes by creating cross sections of recipes, organizers, and other filters. Creating a cookbook will add an entry to the side-bar and all the recipes with the filters chosen will be displayed in the cookbook.",
     "public-cookbook": "Julkinen Keittokirja",
     "public-cookbook-description": "Julkisia keittokirjoja voidaan jakaa ei-Mealien käyttäjille, ja ne näkyvät ryhmäsi sivulla.",
     "filter-options": "Suodatuksen asetukset",
@@ -1307,5 +1339,28 @@
     "household-cookbook-name": "{0} Keittokirja {1}",
     "create-a-cookbook": "Luo keittokirja",
     "cookbook": "Keittokirja"
+  },
+  "query-filter": {
+    "logical-operators": {
+      "and": "AND",
+      "or": "OR"
+    },
+    "relational-operators": {
+      "equals": "equals",
+      "does-not-equal": "does not equal",
+      "is-greater-than": "is greater than",
+      "is-greater-than-or-equal-to": "is greater than or equal to",
+      "is-less-than": "is less than",
+      "is-less-than-or-equal-to": "is less than or equal to"
+    },
+    "relational-keywords": {
+      "is": "is",
+      "is-not": "is not",
+      "is-one-of": "is one of",
+      "is-not-one-of": "is not one of",
+      "contains-all-of": "contains all of",
+      "is-like": "is like",
+      "is-not-like": "is not like"
+    }
   }
 }

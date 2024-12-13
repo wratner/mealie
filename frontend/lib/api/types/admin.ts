@@ -16,6 +16,7 @@ export interface AdminAboutInfo {
   oidcRedirect: boolean;
   oidcProviderName: string;
   enableOpenai: boolean;
+  enableOpenaiImageServices: boolean;
   versionLatest: string;
   apiPort: number;
   apiDocs: boolean;
@@ -125,6 +126,8 @@ export interface RecipeSummary {
   name?: string | null;
   slug?: string;
   image?: unknown;
+  recipeServings?: number;
+  recipeYieldQuantity?: number;
   recipeYield?: string | null;
   totalTime?: string | null;
   prepTime?: string | null;
@@ -159,6 +162,7 @@ export interface RecipeTool {
   name: string;
   slug: string;
   onHand?: boolean;
+  [k: string]: unknown;
 }
 export interface CustomPageImport {
   name: string;
@@ -171,6 +175,10 @@ export interface CustomPageOut {
   position: number;
   categories?: RecipeCategoryResponse[];
   id: number;
+}
+export interface DebugResponse {
+  success: boolean;
+  response?: string | null;
 }
 export interface EmailReady {
   ready: boolean;
@@ -236,11 +244,6 @@ export interface NotificationImport {
   name: string;
   status: boolean;
   exception?: string | null;
-}
-export interface OIDCInfo {
-  configurationUrl: string | null;
-  clientId: string | null;
-  groupsClaim: string | null;
 }
 export interface RecipeImport {
   name: string;

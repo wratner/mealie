@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from shutil import copytree, rmtree
 from typing import Any
@@ -32,6 +32,7 @@ from mealie.schema.user.user import PrivateUser, UserRatingCreate
 from mealie.services._base_service import BaseService
 from mealie.services.openai import OpenAIDataInjection, OpenAILocalImage, OpenAIService
 from mealie.services.recipe.recipe_data_service import RecipeDataService
+from mealie.services.scraper import cleaner
 
 from .template_service import TemplateService
 
@@ -73,7 +74,11 @@ class RecipeService(RecipeServiceBase):
 
         # Check if this user has permission to edit this recipe
         if self.household.id != recipe.household_id:
-            return False
+            other_household = self.repos.households.get_one(recipe.household_id)
+            if not (other_household and other_household.preferences):
+                return False
+            if other_household.preferences.lock_recipe_edits_from_other_households:
+                return False
         if recipe.settings.locked:
             return False
 
@@ -135,7 +140,7 @@ class RecipeService(RecipeServiceBase):
 
         return Recipe(**additional_attrs)
 
-    def get_one(self, slug_or_id: str | UUID) -> Recipe | None:
+    def get_one(self, slug_or_id: str | UUID) -> Recipe:
         if isinstance(slug_or_id, str):
             try:
                 slug_or_id = UUID(slug_or_id)
@@ -185,9 +190,9 @@ class RecipeService(RecipeServiceBase):
         timeline_event_data = RecipeTimelineEventCreate(
             user_id=new_recipe.user_id,
             recipe_id=new_recipe.id,
-            subject="Recipe Created",
+            subject=self.t("recipe.recipe-created"),
             event_type=TimelineEventType.system,
-            timestamp=new_recipe.created_at or datetime.now(timezone.utc),
+            timestamp=new_recipe.created_at or datetime.now(UTC),
         )
 
         self.repos.recipe_timeline_events.create(timeline_event_data)
@@ -293,6 +298,7 @@ class RecipeService(RecipeServiceBase):
             recipe_data = await openai_recipe_service.build_recipe_from_images(
                 local_images, translate_language=translate_language
             )
+            recipe_data = cleaner.clean(recipe_data, self.translator)
 
             recipe = self.create_one(recipe_data)
             data_service = RecipeDataService(recipe.id)
@@ -301,10 +307,10 @@ class RecipeService(RecipeServiceBase):
                 data_service.write_image(f.read(), "webp")
             return recipe
 
-    def duplicate_one(self, old_slug: str, dup_data: RecipeDuplicate) -> Recipe:
+    def duplicate_one(self, old_slug_or_id: str | UUID, dup_data: RecipeDuplicate) -> Recipe:
         """Duplicates a recipe and returns the new recipe."""
 
-        old_recipe = self._get_recipe(old_slug)
+        old_recipe = self.get_one(old_slug_or_id)
         new_recipe_data = old_recipe.model_dump(exclude={"id", "name", "slug", "image", "comments"}, round_trip=True)
         new_recipe = Recipe.model_validate(new_recipe_data)
 
@@ -356,7 +362,7 @@ class RecipeService(RecipeServiceBase):
 
         return new_recipe
 
-    def _pre_update_check(self, slug: str, new_data: Recipe) -> Recipe:
+    def _pre_update_check(self, slug_or_id: str | UUID, new_data: Recipe) -> Recipe:
         """
         gets the recipe from the database and performs a check to see if the user can update the recipe.
         If the user can't update the recipe, an exception is raised.
@@ -367,14 +373,14 @@ class RecipeService(RecipeServiceBase):
             - _if_ the user is locking the recipe, that they can lock the recipe (user is the owner)
 
         Args:
-            slug (str): recipe slug
+            slug_or_id (str | UUID): recipe slug or id
             new_data (Recipe): the new recipe data
 
         Raises:
             exceptions.PermissionDenied (403)
         """
 
-        recipe = self._get_recipe(slug)
+        recipe = self.get_one(slug_or_id)
 
         if recipe is None or recipe.settings is None:
             raise exceptions.NoEntryFound("Recipe not found.")
@@ -388,38 +394,35 @@ class RecipeService(RecipeServiceBase):
 
         return recipe
 
-    def update_one(self, slug: str, update_data: Recipe) -> Recipe:
-        recipe = self._pre_update_check(slug, update_data)
+    def update_one(self, slug_or_id: str | UUID, update_data: Recipe) -> Recipe:
+        recipe = self._pre_update_check(slug_or_id, update_data)
 
-        new_data = self.repos.recipes.update(slug, update_data)
+        new_data = self.group_recipes.update(recipe.slug, update_data)
         self.check_assets(new_data, recipe.slug)
         return new_data
 
-    def patch_one(self, slug: str, patch_data: Recipe) -> Recipe:
-        recipe: Recipe | None = self._pre_update_check(slug, patch_data)
-        recipe = self._get_recipe(slug)
+    def patch_one(self, slug_or_id: str | UUID, patch_data: Recipe) -> Recipe:
+        recipe: Recipe | None = self._pre_update_check(slug_or_id, patch_data)
+        recipe = self.get_one(slug_or_id)
 
-        if recipe is None:
-            raise exceptions.NoEntryFound("Recipe not found.")
-
-        new_data = self.repos.recipes.patch(recipe.slug, patch_data.model_dump(exclude_unset=True))
+        new_data = self.group_recipes.patch(recipe.slug, patch_data.model_dump(exclude_unset=True))
 
         self.check_assets(new_data, recipe.slug)
         return new_data
 
-    def update_last_made(self, slug: str, timestamp: datetime) -> Recipe:
+    def update_last_made(self, slug_or_id: str | UUID, timestamp: datetime) -> Recipe:
         # we bypass the pre update check since any user can update a recipe's last made date, even if it's locked,
         # or if the user belongs to a different household
-        recipe = self._get_recipe(slug)
+        recipe = self.get_one(slug_or_id)
         return self.group_recipes.patch(recipe.slug, {"last_made": timestamp})
 
-    def delete_one(self, slug) -> Recipe:
-        recipe = self._get_recipe(slug)
+    def delete_one(self, slug_or_id: str | UUID) -> Recipe:
+        recipe = self.get_one(slug_or_id)
 
         if not self.can_update(recipe):
             raise exceptions.PermissionDenied("You do not have permission to delete this recipe.")
 
-        data = self.repos.recipes.delete(recipe.id, "id")
+        data = self.group_recipes.delete(recipe.id, "id")
         self.delete_assets(data)
         return data
 
@@ -486,7 +489,13 @@ class OpenAIRecipeService(RecipeServiceBase):
         if translate_language:
             message += f" Please translate the recipe to {translate_language}."
 
-        response = await openai_service.get_response(prompt, message, images=openai_images, force_json_response=True)
+        try:
+            response = await openai_service.get_response(
+                prompt, message, images=openai_images, force_json_response=True
+            )
+        except Exception as e:
+            raise Exception("Failed to call OpenAI services") from e
+
         try:
             openai_recipe = OpenAIRecipe.parse_openai_response(response)
             recipe = self._convert_recipe(openai_recipe)

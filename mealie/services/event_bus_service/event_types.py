@@ -1,5 +1,5 @@
 import uuid
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from enum import Enum, auto
 from typing import Any
 
@@ -138,6 +138,11 @@ class EventRecipeData(EventDocumentDataBase):
     recipe_slug: str
 
 
+class EventRecipeBulkData(EventDocumentDataBase):
+    document_type: EventDocumentType = EventDocumentType.recipe
+    recipe_slugs: list[str]
+
+
 class EventRecipeBulkReportData(EventDocumentDataBase):
     document_type: EventDocumentType = EventDocumentType.recipe_bulk_report
     report_id: UUID4
@@ -188,4 +193,4 @@ class Event(MealieModel):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.event_id = uuid.uuid4()
-        self.timestamp = datetime.now(timezone.utc)
+        self.timestamp = datetime.now(UTC)

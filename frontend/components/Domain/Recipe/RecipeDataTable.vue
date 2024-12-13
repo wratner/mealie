@@ -3,6 +3,8 @@
     v-model="selected"
     item-key="id"
     show-select
+    sort-by="dateAdded"
+    sort-desc
     :headers="headers"
     :items="recipes"
     :items-per-page="15"
@@ -31,13 +33,16 @@
     </template>
     <template #item.userId="{ item }">
       <v-list-item class="justify-start">
-        <UserAvatar :user-id="item.userId" size="40" />
-        <v-list-item-content>
-          <v-list-item-title>
+        <UserAvatar :user-id="item.userId" :tooltip="false" size="40" />
+        <v-list-item-content class="pl-2">
+          <v-list-item-title class="text-left">
             {{ getMember(item.userId) }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+    </template>
+    <template #item.dateAdded="{ item }">
+      {{ formatDate(item.dateAdded) }}
     </template>
   </v-data-table>
 </template>
@@ -58,6 +63,8 @@ interface ShowHeaders {
   tags: boolean;
   categories: boolean;
   tools: boolean;
+  recipeServings: boolean;
+  recipeYieldQuantity: boolean;
   recipeYield: boolean;
   dateAdded: boolean;
 }
@@ -88,6 +95,8 @@ export default defineComponent({
           owner: false,
           tags: true,
           categories: true,
+          recipeServings: true,
+          recipeYieldQuantity: true,
           recipeYield: true,
           dateAdded: true,
         };
@@ -122,8 +131,14 @@ export default defineComponent({
       if (props.showHeaders.tools) {
         hdrs.push({ text: i18n.t("tool.tools"), value: "tools" });
       }
+      if (props.showHeaders.recipeServings) {
+        hdrs.push({ text: i18n.t("recipe.servings"), value: "recipeServings" });
+      }
+      if (props.showHeaders.recipeYieldQuantity) {
+        hdrs.push({ text: i18n.t("recipe.yield"), value: "recipeYieldQuantity" });
+      }
       if (props.showHeaders.recipeYield) {
-        hdrs.push({ text: i18n.t("recipe.yield"), value: "recipeYield" });
+        hdrs.push({ text: i18n.t("recipe.yield-text"), value: "recipeYield" });
       }
       if (props.showHeaders.dateAdded) {
         hdrs.push({ text: i18n.t("general.date-added"), value: "dateAdded" });
@@ -131,6 +146,14 @@ export default defineComponent({
 
       return hdrs;
     });
+
+    function formatDate(date: string) {
+      try {
+        return i18n.d(Date.parse(date), "medium");
+      } catch {
+        return "";
+      }
+    }
 
     // ============
     // Group Members
@@ -140,7 +163,7 @@ export default defineComponent({
     async function refreshMembers() {
       const { data } = await api.groups.fetchMembers();
       if (data) {
-        members.value = data;
+        members.value = data.items;
       }
     }
 
@@ -160,6 +183,7 @@ export default defineComponent({
       groupSlug,
       setValue,
       headers,
+      formatDate,
       members,
       getMember,
     };

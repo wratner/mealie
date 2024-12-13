@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="user">
     <section class="d-flex flex-column align-center mt-4">
-      <UserAvatar size="96" :user-id="$auth.user.id" />
+      <UserAvatar :tooltip="false" size="96" :user-id="user.id" />
 
       <h2 class="headline">{{ $t('profile.welcome-user', [user.fullName]) }}</h2>
       <p class="subtitle-1 mb-0 text-center">
@@ -9,44 +9,14 @@
       </p>
       <v-card flat color="transparent" width="100%" max-width="600px">
         <v-card-actions class="d-flex justify-center my-4">
-          <v-btn v-if="$auth.user.canInvite"  outlined rounded @click="getSignupLink()">
+          <v-btn v-if="user.canInvite" outlined rounded @click="inviteDialog = true">
             <v-icon left>
               {{ $globals.icons.createAlt }}
             </v-icon>
             {{ $t('profile.get-invite-link') }}
           </v-btn>
         </v-card-actions>
-        <div v-show="generatedSignupLink !== ''">
-          <v-card-text>
-            <p class="text-center pb-0">
-              {{ generatedSignupLink }}
-            </p>
-            <v-text-field v-model="sendTo" :label="$t('user.email')" :rules="[validators.email]"> </v-text-field>
-          </v-card-text>
-          <v-card-actions class="py-0 align-center" style="gap: 4px">
-            <BaseButton cancel @click="generatedSignupLink = ''"> {{ $t("general.close") }} </BaseButton>
-            <v-spacer></v-spacer>
-            <AppButtonCopy :icon="false" color="info" :copy-text="generatedSignupLink" />
-            <BaseButton color="info" :disabled="!validEmail" :loading="loading" @click="sendInvite">
-              <template #icon>
-                {{ $globals.icons.email }}
-              </template>
-              {{ $t("user.email") }}
-            </BaseButton>
-          </v-card-actions>
-        </div>
-        <div v-show="showPublicLink">
-          <v-card-text>
-            <p class="text-center pb-0">
-              {{ publicLink }}
-            </p>
-          </v-card-text>
-          <v-card-actions class="py-0 align-center" style="gap: 4px">
-            <BaseButton cancel @click="showPublicLink = false"> {{ $t("general.close") }} </BaseButton>
-            <v-spacer></v-spacer>
-            <AppButtonCopy :icon="false" color="info" :copy-text="publicLink" />
-          </v-card-actions>
-        </div>
+        <UserInviteDialog v-model="inviteDialog" />
       </v-card>
     </section>
     <section class="my-3">
@@ -113,7 +83,7 @@
         <p>{{ $t('profile.household-description') }}</p>
       </div>
       <v-row tag="section">
-        <v-col v-if="$auth.user.canManage" cols="12" sm="12" md="6">
+        <v-col v-if="user.canManageHousehold" cols="12" sm="12" md="6">
           <UserProfileLinkCard
             :link="{ text: $tc('profile.household-settings'), to: `/household` }"
             :image="require('~/static/svgs/manage-group-settings.svg')"
@@ -165,13 +135,13 @@
       </v-row>
     </section>
     <v-divider class="my-7" />
-    <section v-if="$auth.user.canManage || $auth.user.canOrganize || $auth.user.advanced">
+    <section v-if="user.canManage || user.canOrganize || user.advanced">
       <div>
         <h3 class="headline">{{ $t('group.group') }}</h3>
         <p>{{ $t('profile.group-description') }}</p>
       </div>
       <v-row tag="section">
-        <v-col v-if="$auth.user.canManage" cols="12" sm="12" md="6">
+        <v-col v-if="user.canManage" cols="12" sm="12" md="6">
           <UserProfileLinkCard
             :link="{ text: $tc('profile.group-settings'), to: `/group` }"
             :image="require('~/static/svgs/manage-group-settings.svg')"
@@ -180,8 +150,7 @@
             {{ $t('profile.group-settings-description') }}
           </UserProfileLinkCard>
         </v-col>
-        <!-- $auth.user.canOrganize should not be null because of the auth middleware -->
-        <v-col v-if="$auth.user.canOrganize" cols="12" sm="12" md="6">
+        <v-col v-if="user.canOrganize" cols="12" sm="12" md="6">
           <UserProfileLinkCard
             :link="{ text: $tc('profile.manage-data'), to: `/group/data/foods` }"
             :image="require('~/static/svgs/manage-recipes.svg')"
@@ -207,19 +176,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, useContext, ref, toRefs, reactive, useAsync, useRoute } from "@nuxtjs/composition-api";
+import { computed, defineComponent, useContext, ref, useAsync, useRoute } from "@nuxtjs/composition-api";
 import UserProfileLinkCard from "@/components/Domain/User/UserProfileLinkCard.vue";
 import { useUserApi } from "~/composables/api";
-import { validators } from "~/composables/use-validators";
-import { alert } from "~/composables/use-toast";
 import UserAvatar from "@/components/Domain/User/UserAvatar.vue";
 import { useAsyncKey } from "~/composables/use-utils";
 import StatsCards from "~/components/global/StatsCards.vue";
 import { UserOut } from "~/lib/api/types/user";
+import UserInviteDialog from "~/components/Domain/User/UserInviteDialog.vue";
 
 export default defineComponent({
   name: "UserProfile",
   components: {
+    UserInviteDialog,
     UserProfileLinkCard,
     UserAvatar,
     StatsCards,
@@ -234,60 +203,8 @@ export default defineComponent({
     // @ts-ignore $auth.user is typed as unknown, but it's a user
     const user = computed<UserOut | null>(() => $auth.user);
 
-    const showPublicLink = ref(false);
-    const publicLink = ref("");
-
-    const generatedSignupLink = ref("");
-    const token = ref("");
+    const inviteDialog = ref(false);
     const api = useUserApi();
-
-    async function getSignupLink() {
-      const { data } = await api.households.createInvitation({ uses: 1 });
-      if (data) {
-        token.value = data.token;
-        generatedSignupLink.value = constructLink(data.token);
-        showPublicLink.value = false;
-      }
-    }
-
-    function constructLink(token: string) {
-      return `${window.location.origin}/register?token=${token}`;
-    }
-
-    // =================================================
-    // Email Invitation
-    const state = reactive({
-      loading: false,
-      sendTo: "",
-    });
-
-    async function sendInvite() {
-      state.loading = true;
-      const { data } = await api.email.sendInvitation({
-        email: state.sendTo,
-        token: token.value,
-      });
-
-      if (data && data.success) {
-        alert.success(i18n.tc("profile.email-sent"));
-      } else {
-        alert.error(i18n.tc("profile.error-sending-email"));
-      }
-      state.loading = false;
-    }
-
-    const validEmail = computed(() => {
-      if (state.sendTo === "") {
-        return false;
-      }
-      const valid = validators.email(state.sendTo);
-
-      // Explicit bool check because validators.email sometimes returns a string
-      if (valid === true) {
-        return true;
-      }
-      return false;
-    });
 
     const stats = useAsync(async () => {
       const { data } = await api.households.statistics();
@@ -322,13 +239,15 @@ export default defineComponent({
       return iconText[key] ?? $globals.icons.primary;
     }
 
-    const statsTo = computed<{ [key: string]: string }>(() => { return {
-      totalRecipes: `/g/${groupSlug.value}/`,
-      totalUsers: "/household/members",
-      totalCategories: `/g/${groupSlug.value}/recipes/categories`,
-      totalTags: `/g/${groupSlug.value}/recipes/tags`,
-      totalTools: `/g/${groupSlug.value}/recipes/tools`,
-    }});
+    const statsTo = computed<{ [key: string]: string }>(() => {
+      return {
+        totalRecipes: `/g/${groupSlug.value}/`,
+        totalUsers: "/household/members",
+        totalCategories: `/g/${groupSlug.value}/recipes/categories`,
+        totalTags: `/g/${groupSlug.value}/recipes/tags`,
+        totalTools: `/g/${groupSlug.value}/recipes/tools`,
+      }
+    });
 
     function getStatsTo(key: string) {
       return statsTo.value[key] ?? "unknown";
@@ -339,17 +258,9 @@ export default defineComponent({
       getStatsTitle,
       getStatsIcon,
       getStatsTo,
+      inviteDialog,
       stats,
       user,
-      constructLink,
-      generatedSignupLink,
-      showPublicLink,
-      publicLink,
-      getSignupLink,
-      sendInvite,
-      validators,
-      validEmail,
-      ...toRefs(state),
     };
   },
   head() {

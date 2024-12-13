@@ -11,6 +11,8 @@ import {
   UpdateImageResponse,
   RecipeZipTokenResponse,
   RecipeLastMade,
+  RecipeSuggestionQuery,
+  RecipeSuggestionResponse,
   RecipeTimelineEventIn,
   RecipeTimelineEventOut,
   RecipeTimelineEventUpdate,
@@ -31,11 +33,13 @@ const prefix = "/api";
 const routes = {
   recipesCreate: `${prefix}/recipes/create`,
   recipesBase: `${prefix}/recipes`,
+  recipesSuggestions: `${prefix}/recipes/suggestions`,
   recipesTestScrapeUrl: `${prefix}/recipes/test-scrape-url`,
-  recipesCreateUrl: `${prefix}/recipes/create-url`,
-  recipesCreateUrlBulk: `${prefix}/recipes/create-url/bulk`,
-  recipesCreateFromZip: `${prefix}/recipes/create-from-zip`,
-  recipesCreateFromImage: `${prefix}/recipes/create-from-image`,
+  recipesCreateUrl: `${prefix}/recipes/create/url`,
+  recipesCreateUrlBulk: `${prefix}/recipes/create/url/bulk`,
+  recipesCreateFromZip: `${prefix}/recipes/create/zip`,
+  recipesCreateFromImage: `${prefix}/recipes/create/image`,
+  recipesCreateFromHtmlOrJson: `${prefix}/recipes/create/html-or-json`,
   recipesCategory: `${prefix}/recipes/category`,
   recipesParseIngredient: `${prefix}/parser/ingredient`,
   recipesParseIngredients: `${prefix}/parser/ingredients`,
@@ -56,13 +60,14 @@ const routes = {
 };
 
 export type RecipeSearchQuery = {
-  search: string;
+  search?: string;
   orderDirection?: "asc" | "desc";
   groupId?: string;
 
   queryFilter?: string;
 
   cookbook?: string;
+  households?: string[];
 
   categories?: string[];
   requireAllCategories?: boolean;
@@ -107,6 +112,12 @@ export class RecipeAPI extends BaseCRUDAPI<CreateRecipe, Recipe, Recipe> {
     });
   }
 
+  async getSuggestions(q: RecipeSuggestionQuery, foods: string[] | null = null, tools: string[]| null = null) {
+    return await this.requests.get<RecipeSuggestionResponse>(
+      route(routes.recipesSuggestions, { ...q, foods, tools })
+    );
+  }
+
   async createAsset(recipeSlug: string, payload: CreateAsset) {
     const formData = new FormData();
     formData.append("file", payload.file);
@@ -131,6 +142,10 @@ export class RecipeAPI extends BaseCRUDAPI<CreateRecipe, Recipe, Recipe> {
 
   async testCreateOneUrl(url: string, useOpenAI = false) {
     return await this.requests.post<Recipe | null>(routes.recipesTestScrapeUrl, { url, useOpenAI });
+  }
+
+  async createOneByHtmlOrJson(data: string, includeTags: boolean) {
+    return await this.requests.post<string>(routes.recipesCreateFromHtmlOrJson, { data, includeTags });
   }
 
   async createOneByUrl(url: string, includeTags: boolean) {
@@ -170,6 +185,14 @@ export class RecipeAPI extends BaseCRUDAPI<CreateRecipe, Recipe, Recipe> {
 
   getZipRedirectUrl(recipeSlug: string, token: string) {
     return `${routes.recipesRecipeSlugExportZip(recipeSlug)}?token=${token}`;
+  }
+
+  async updateMany(payload: Recipe[]) {
+    return await this.requests.put<Recipe[]>(routes.recipesBase, payload);
+  }
+
+  async patchMany(payload: Recipe[]) {
+    return await this.requests.patch<Recipe[]>(routes.recipesBase, payload);
   }
 
   async updateLastMade(recipeSlug: string, timestamp: string) {

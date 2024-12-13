@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Annotated, Any, Generic, TypeVar
 from uuid import UUID
@@ -8,7 +8,9 @@ from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.orm.interfaces import LoaderOption
 
 from mealie.core.config import get_app_dirs, get_app_settings
+from mealie.db.models.recipe.recipe import RecipeModel
 from mealie.db.models.users import User
+from mealie.db.models.users.user_to_recipe import UserToRecipe
 from mealie.db.models.users.users import AuthMethod, LongLiveToken
 from mealie.schema._mealie import MealieModel
 from mealie.schema.group.group_preferences import ReadGroupPreferences
@@ -88,6 +90,12 @@ class UserRatingUpdate(MealieModel):
 class UserRatingOut(UserRatingCreate):
     id: UUID4
 
+    @classmethod
+    def loader_options(cls) -> list[LoaderOption]:
+        return [
+            joinedload(UserToRecipe.recipe).joinedload(RecipeModel.user).load_only(User.household_id, User.group_id)
+        ]
+
 
 class UserRatings(BaseModel, Generic[DataT]):
     ratings: list[DataT]
@@ -106,6 +114,7 @@ class UserBase(MealieModel):
 
     can_invite: bool = False
     can_manage: bool = False
+    can_manage_household: bool = False
     can_organize: bool = False
     model_config = ConfigDict(
         from_attributes=True,
@@ -143,6 +152,8 @@ class UserBase(MealieModel):
 
 
 class UserIn(UserBase):
+    username: str
+    full_name: str
     password: str
 
 
@@ -169,6 +180,9 @@ class UserOut(UserBase):
 
 class UserSummary(MealieModel):
     id: UUID4
+    group_id: UUID4
+    household_id: UUID4
+    username: str
     full_name: str
     model_config = ConfigDict(from_attributes=True)
 
@@ -204,7 +218,7 @@ class PrivateUser(UserOut):
             return False
 
         lockout_expires_at = self.locked_at + timedelta(hours=get_app_settings().SECURITY_USER_LOCKOUT_TIME)
-        return lockout_expires_at > datetime.now(timezone.utc)
+        return lockout_expires_at > datetime.now(UTC)
 
     def directory(self) -> Path:
         return PrivateUser.get_directory(self.id)

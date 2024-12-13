@@ -69,7 +69,7 @@ export interface ReadWebhook {
   enabled?: boolean;
   name?: string;
   url?: string;
-  webhookType?: WebhookType & string;
+  webhookType?: WebhookType;
   scheduledTime: string;
   groupId: string;
   householdId: string;
@@ -77,6 +77,9 @@ export interface ReadWebhook {
 }
 export interface UserSummary {
   id: string;
+  groupId: string;
+  householdId: string;
+  username: string;
   fullName: string;
 }
 export interface ReadGroupPreferences {
@@ -107,13 +110,14 @@ export interface PrivateUser {
   username?: string | null;
   fullName?: string | null;
   email: string;
-  authMethod?: AuthMethod & string;
+  authMethod?: AuthMethod;
   admin?: boolean;
   group: string;
   household: string;
   advanced?: boolean;
   canInvite?: boolean;
   canManage?: boolean;
+  canManageHousehold?: boolean;
   canOrganize?: boolean;
   groupId: string;
   groupSlug: string;
@@ -130,9 +134,6 @@ export interface LongLiveTokenOut {
   name: string;
   id: number;
   createdAt?: string | null;
-}
-export interface OIDCRequest {
-  id_token: string;
 }
 export interface PasswordResetToken {
   token: string;
@@ -174,7 +175,7 @@ export interface CreateWebhook {
   enabled?: boolean;
   name?: string;
   url?: string;
-  webhookType?: WebhookType & string;
+  webhookType?: WebhookType;
   scheduledTime: string;
 }
 export interface UserBase {
@@ -182,27 +183,29 @@ export interface UserBase {
   username?: string | null;
   fullName?: string | null;
   email: string;
-  authMethod?: AuthMethod & string;
+  authMethod?: AuthMethod;
   admin?: boolean;
   group?: string | null;
   household?: string | null;
   advanced?: boolean;
   canInvite?: boolean;
   canManage?: boolean;
+  canManageHousehold?: boolean;
   canOrganize?: boolean;
 }
 export interface UserIn {
   id?: string | null;
-  username?: string | null;
-  fullName?: string | null;
+  username: string;
+  fullName: string;
   email: string;
-  authMethod?: AuthMethod & string;
+  authMethod?: AuthMethod;
   admin?: boolean;
   group?: string | null;
   household?: string | null;
   advanced?: boolean;
   canInvite?: boolean;
   canManage?: boolean;
+  canManageHousehold?: boolean;
   canOrganize?: boolean;
   password: string;
 }
@@ -211,13 +214,14 @@ export interface UserOut {
   username?: string | null;
   fullName?: string | null;
   email: string;
-  authMethod?: AuthMethod & string;
+  authMethod?: AuthMethod;
   admin?: boolean;
   group: string;
   household: string;
   advanced?: boolean;
   canInvite?: boolean;
   canManage?: boolean;
+  canManageHousehold?: boolean;
   canOrganize?: boolean;
   groupId: string;
   groupSlug: string;

@@ -71,10 +71,11 @@ from .recipe_ingredient import (
 )
 from .recipe_notes import RecipeNote
 from .recipe_nutrition import Nutrition
-from .recipe_scraper import ScrapeRecipe, ScrapeRecipeTest
+from .recipe_scraper import ScrapeRecipe, ScrapeRecipeBase, ScrapeRecipeData, ScrapeRecipeTest
 from .recipe_settings import RecipeSettings
 from .recipe_share_token import RecipeShareToken, RecipeShareTokenCreate, RecipeShareTokenSave, RecipeShareTokenSummary
 from .recipe_step import IngredientReferences, RecipeStep
+from .recipe_suggestion import RecipeSuggestionQuery, RecipeSuggestionResponse, RecipeSuggestionResponseItem
 from .recipe_timeline_events import (
     RecipeTimelineEventCreate,
     RecipeTimelineEventIn,
@@ -109,6 +110,9 @@ __all__ = [
     "RecipeTimelineEventUpdate",
     "TimelineEventImage",
     "TimelineEventType",
+    "RecipeSuggestionQuery",
+    "RecipeSuggestionResponse",
+    "RecipeSuggestionResponseItem",
     "Nutrition",
     "RecipeShareToken",
     "RecipeShareTokenCreate",
@@ -157,6 +161,8 @@ __all__ = [
     "RecipeTool",
     "RecipeToolPagination",
     "ScrapeRecipe",
+    "ScrapeRecipeBase",
+    "ScrapeRecipeData",
     "ScrapeRecipeTest",
     "AssignCategories",
     "AssignSettings",

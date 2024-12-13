@@ -182,6 +182,7 @@
     "date": "Data",
     "id": "Id",
     "owner": "Proprietário",
+    "change-owner": "Change Owner",
     "date-added": "Data de inclusão",
     "none": "Nenhum",
     "run": "Executar",
@@ -212,7 +213,11 @@
     "clipboard-copy-failure": "Falha ao copiar para a área de transferência.",
     "confirm-delete-generic-items": "Tem certeza que quer excluir os itens seguintes?",
     "organizers": "Organizadores",
-    "caution": "Cuidado"
+    "caution": "Cuidado",
+    "show-advanced": "Show Advanced",
+    "add-field": "Add Field",
+    "date-created": "Date Created",
+    "date-updated": "Date Updated"
   },
   "group": {
     "are-you-sure-you-want-to-delete-the-group": "Tem certeza que deseja excluir o grupo <b>{groupName}<b/>?",
@@ -241,13 +246,14 @@
     "manage-members": "Gerenciar membros",
     "manage-members-description": "Manage the permissions of the members in your household. {manage} allows the user to access the data-management page, and {invite} allows the user to generate invitation links for other users. Group owners cannot change their own permissions.",
     "manage": "Gerenciar",
+    "manage-household": "Manage Household",
     "invite": "Convidar",
     "looking-to-update-your-profile": "Procurando atualizar seu perfil?",
     "default-recipe-preferences-description": "Estas são as configurações padrão quando uma nova receita é criada no seu grupo. Elas podem ser alteradas para receitas individuais no menu de configurações de receitas.",
     "default-recipe-preferences": "Preferências padrões de receita",
     "group-preferences": "Preferências de Grupo",
     "private-group": "Grupo Privado",
-    "private-group-description": "Setting your group to private will default all public view options to default. This overrides any individual households or recipes public view settings.",
+    "private-group-description": "Setting your group to private will disable all public view options. This overrides any individual public view settings",
     "enable-public-access": "Ativar Acesso Público",
     "enable-public-access-description": "Tornar receitas do grupo públicas por padrão, e permitir a sua visualização por visitantes não logados",
     "allow-users-outside-of-your-group-to-see-your-recipes": "Permitir que usuários fora do seu grupo vejam suas receitas",
@@ -285,7 +291,9 @@
     "admin-household-management-text": "Changes to this household will be reflected immediately.",
     "household-id-value": "Household Id: {0}",
     "private-household": "Private Household",
-    "private-household-description": "Setting your household to private will default all public view options to default. This overrides any individual recipes public view settings.",
+    "private-household-description": "Setting your household to private will disable all public view options. This overrides any individual public view settings",
+    "lock-recipe-edits-from-other-households": "Lock recipe edits from other households",
+    "lock-recipe-edits-from-other-households-description": "When enabled only users in your household can edit recipes created by your household",
     "household-recipe-preferences": "Household Recipe Preferences",
     "default-recipe-preferences-description": "These are the default settings when a new recipe is created in your household. These can be changed for individual recipes in the recipe settings menu.",
     "allow-users-outside-of-your-household-to-see-your-recipes": "Allow users outside of your household to see your recipes",
@@ -312,6 +320,10 @@
     "mealplan-settings": "Configurações de Plano de Refeições",
     "mealplan-update-failed": "Falha ao atualizar Plano de Refeições",
     "mealplan-updated": "Plano de Refeições atualizado",
+    "mealplan-households-description": "If no household is selected, recipes can be added from any household",
+    "any-category": "Any Category",
+    "any-tag": "Any Tag",
+    "any-household": "Any Household",
     "no-meal-plan-defined-yet": "Nenhum Plano de Refeições definido ainda",
     "no-meal-planned-for-today": "Nenhuma refeição planejada para hoje",
     "numberOfDays-hint": "Número de dias ao carregar a página",
@@ -344,7 +356,7 @@
     "for-type-meal-types": "para {0} tipos de refeição",
     "meal-plan-rules": "Regras de Plano de Refeições",
     "new-rule": "Nova Regra",
-    "meal-plan-rules-description": "Você pode criar regras para selecionar receitas automaticamente para seus Planos de Refeição. Essas regras são usadas pelo servidor para determinar o conjunto aleatório de receitas a serem selecionadas ao criar os planos de refeição. Note que se as regras têm as mesmas condições de dia/tipo então as categorias das regras serão mescladas. Na prática, é desnecessário criar regras duplicadas, mas é possível fazê-lo.",
+    "meal-plan-rules-description": "You can create rules for auto selecting recipes for your meal plans. These rules are used by the server to determine the random pool of recipes to select from when creating meal plans. Note that if rules have the same day/type constraints then the rule filters will be merged. In practice, it's unnecessary to create duplicate rules, but it's possible to do so.",
     "new-rule-description": "Ao criar uma nova regra para um Plano de Refeições, você pode restringir a regra a ser aplicada a um dia específico da semana e/ou a um tipo específico de refeição. Para aplicar uma regra a todos os dias ou a todos os tipos de refeições, você pode definir a regra para \"Qualquer\", que será aplicada a todos os valores possíveis para o dia e/ou o tipo de refeição.",
     "recipe-rules": "Regras das receitas",
     "applies-to-all-days": "Aplica-se diariamente",
@@ -419,6 +431,7 @@
     "paste-in-your-recipe-data-each-line-will-be-treated-as-an-item-in-a-list": "Cole os dados da sua receita. Cada linha será tratado como um item em uma lista",
     "recipe-markup-specification": "Especificação da Receita",
     "recipe-url": "URL da Receita",
+    "recipe-html-or-json": "Recipe HTML or JSON",
     "upload-a-recipe": "Enviar uma Receita",
     "upload-individual-zip-file": "Enviar um arquivo .zip individual exportado a partir de outra instância do Mealie.",
     "url-form-hint": "Copie e cole um link do seu site de receita favorito",
@@ -453,6 +466,7 @@
     "calories-suffix": "calorias",
     "carbohydrate-content": "Carboidrato",
     "categories": "Categorias",
+    "cholesterol-content": "Cholesterol",
     "comment-action": "Comentário",
     "comment": "Comentário",
     "comments": "Comentários",
@@ -499,6 +513,7 @@
     "recipe-updated": "Receita atualizada",
     "remove-from-favorites": "Remover dos Favoritos",
     "remove-section": "Remover Seção",
+    "saturated-fat-content": "Saturated fat",
     "save-recipe-before-use": "Salve a receita antes de utilizar",
     "section-title": "Título da Seção",
     "servings": "Porções",
@@ -509,7 +524,9 @@
     "sugar-content": "Açúcares",
     "title": "Título",
     "total-time": "Tempo Total",
+    "trans-fat-content": "Trans-fat",
     "unable-to-delete-recipe": "Não foi possível apagar a receita",
+    "unsaturated-fat-content": "Unsaturated fat",
     "no-recipe": "Nenhuma Receita",
     "locked-by-owner": "Bloqueado pelo Proprietário",
     "join-the-conversation": "Participe da conversa",
@@ -597,10 +614,16 @@
     "scrape-recipe-description": "Scrape uma receita por url. Forneça o Url para o site que você deseja scrape, e Mealie tentará raspar a receita desse site e adicioná-la à sua coleção.",
     "scrape-recipe-have-a-lot-of-recipes": "Tem muitas receitas a extrair de uma vez?",
     "scrape-recipe-suggest-bulk-importer": "Tente o importador em massa",
+    "scrape-recipe-have-raw-html-or-json-data": "Have raw HTML or JSON data?",
+    "scrape-recipe-you-can-import-from-raw-data-directly": "You can import from raw data directly",
     "import-original-keywords-as-tags": "Importar palavras-chave originais como marcadores",
     "stay-in-edit-mode": "Permanecer no modo de edição",
     "import-from-zip": "Importar do .zip",
     "import-from-zip-description": "Importar uma única receita exportada de outra instância Mealie.",
+    "import-from-html-or-json": "Import from HTML or JSON",
+    "import-from-html-or-json-description": "Import a single recipe from raw HTML or JSON. This is useful if you have a recipe from a site that Mealie can't scrape normally, or from some other external source.",
+    "json-import-format-description-colon": "To import via JSON, it must be in valid format:",
+    "json-editor": "JSON Editor",
     "zip-files-must-have-been-exported-from-mealie": "Os arquivos .zip devem ter sido exportados do Mealie",
     "create-a-recipe-by-uploading-a-scan": "Crie uma receita carregando uma digitalização.",
     "upload-a-png-image-from-a-recipe-book": "Carregar uma imagem em png de um livro de receitas",
@@ -638,7 +661,8 @@
       "missing-unit": "Criar unidade ausente: {unit}",
       "missing-food": "Criar comida ausente: {food}",
       "no-food": "Sem Comida"
-    }
+    },
+    "reset-servings-count": "Reset Servings Count"
   },
   "search": {
     "advanced-search": "Pesquisa avançada",
@@ -649,6 +673,7 @@
     "or": "Ou",
     "has-any": "Tem alguma",
     "has-all": "Tem todos",
+    "clear-selection": "Clear Selection",
     "results": "Resultados",
     "search": "Pesquisar",
     "search-mealie": "Pesquisar no Mealie (pressione /)",
@@ -987,6 +1012,7 @@
     "administrator": "Administrador",
     "user-can-invite-other-to-group": "O usuário pode convidar outros para o grupo",
     "user-can-manage-group": "Usuário pode gerenciar o grupo",
+    "user-can-manage-household": "User can manage household",
     "user-can-organize-group-data": "Usuário pode organizar dados do grupo",
     "enable-advanced-features": "Ativar recursos avançados",
     "it-looks-like-this-is-your-first-time-logging-in": "Parece que este é seu primeiro login.",
@@ -1241,7 +1267,13 @@
       "here-are-a-few-things-to-help-you-get-started": "Aqui há algumas coisas para ajudá-lo a começar com o Mealie",
       "restore-from-v1-backup": "Tem uma cópia de segurança de uma instância anterior do Mealie v1? Você pode restaurá-la aqui.",
       "manage-profile-or-get-invite-link": "Gerencie seu próprio perfil, ou pegue um link de convite para compartilhar."
-    }
+    },
+    "debug-openai-services": "Debug OpenAI Services",
+    "debug-openai-services-description": "Use this page to debug OpenAI services. You can test your OpenAI connection and see the results here. If you have image services enabled, you can also provide an image.",
+    "run-test": "Run Test",
+    "test-results": "Test Results",
+    "group-delete-note": "Groups with users or households cannot be deleted",
+    "household-delete-note": "Households with users cannot be deleted"
   },
   "profile": {
     "welcome-user": "👋 Bem-vindo(a), {0}!",
@@ -1294,7 +1326,7 @@
   },
   "cookbook": {
     "cookbooks": "Livros de Receita",
-    "description": "Cookbooks são outra maneira de organizar receitas, criando seções cruzadas de receitas e etiquetas. Criando um livro de receitas vai adicionar uma entrada para a barra lateral e todas as receitas com as tags e categorias escolhidas serão exibidas no livro de cozinha.",
+    "description": "Cookbooks are another way to organize recipes by creating cross sections of recipes, organizers, and other filters. Creating a cookbook will add an entry to the side-bar and all the recipes with the filters chosen will be displayed in the cookbook.",
     "public-cookbook": "Livro de Receitas público",
     "public-cookbook-description": "Cookbooks públicos podem ser compartilhados com usuários que não sejam não-mealiee serão exibidos na sua página de grupos.",
     "filter-options": "Opções de filtro",
@@ -1307,5 +1339,28 @@
     "household-cookbook-name": "{0} Cookbook {1}",
     "create-a-cookbook": "Criar um Livro de Receitas",
     "cookbook": "Livro de Receitas"
+  },
+  "query-filter": {
+    "logical-operators": {
+      "and": "AND",
+      "or": "OR"
+    },
+    "relational-operators": {
+      "equals": "equals",
+      "does-not-equal": "does not equal",
+      "is-greater-than": "is greater than",
+      "is-greater-than-or-equal-to": "is greater than or equal to",
+      "is-less-than": "is less than",
+      "is-less-than-or-equal-to": "is less than or equal to"
+    },
+    "relational-keywords": {
+      "is": "is",
+      "is-not": "is not",
+      "is-one-of": "is one of",
+      "is-not-one-of": "is not one of",
+      "contains-all-of": "contains all of",
+      "is-like": "is like",
+      "is-not-like": "is not like"
+    }
   }
 }

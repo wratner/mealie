@@ -1,9 +1,8 @@
 import secrets
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import jwt
-from fastapi import Request
 from sqlalchemy.orm.session import Session
 
 from mealie.core import root_logger
@@ -12,19 +11,15 @@ from mealie.core.security.hasher import get_hasher
 from mealie.core.security.providers.auth_provider import AuthProvider
 from mealie.core.security.providers.credentials_provider import CredentialsProvider
 from mealie.core.security.providers.ldap_provider import LDAPProvider
-from mealie.core.security.providers.openid_provider import OpenIDProvider
-from mealie.schema.user.auth import CredentialsRequest, CredentialsRequestForm, OIDCRequest
+from mealie.schema.user.auth import CredentialsRequest, CredentialsRequestForm
 
 ALGORITHM = "HS256"
 
 logger = root_logger.get_logger("security")
 
 
-def get_auth_provider(session: Session, request: Request, data: CredentialsRequestForm) -> AuthProvider:
+def get_auth_provider(session: Session, data: CredentialsRequestForm) -> AuthProvider:
     settings = get_app_settings()
-
-    if request.cookies.get("mealie.auth.strategy") == "oidc":
-        return OpenIDProvider(session, OIDCRequest(id_token=request.cookies.get("mealie.auth._id_token.oidc")))
 
     credentials_request = CredentialsRequest(**data.__dict__)
     if settings.LDAP_ENABLED:
@@ -39,7 +34,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     to_encode = data.copy()
     expires_delta = expires_delta or timedelta(hours=settings.TOKEN_TIME)
 
-    expire = datetime.now(timezone.utc) + expires_delta
+    expire = datetime.now(UTC) + expires_delta
 
     to_encode["exp"] = expire
     return jwt.encode(to_encode, settings.SECRET, algorithm=ALGORITHM)

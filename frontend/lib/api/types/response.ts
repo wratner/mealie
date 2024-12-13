@@ -7,6 +7,9 @@
 
 export type OrderByNullPosition = "first" | "last";
 export type OrderDirection = "asc" | "desc";
+export type LogicalOperator = "AND" | "OR";
+export type RelationalKeyword = "IS" | "IS NOT" | "IN" | "NOT IN" | "CONTAINS ALL" | "LIKE" | "NOT LIKE";
+export type RelationalOperator = "=" | "<>" | ">" | "<" | ">=" | "<=";
 
 export interface ErrorResponse {
   message: string;
@@ -17,13 +20,24 @@ export interface FileTokenResponse {
   fileToken: string;
 }
 export interface PaginationQuery {
-  page?: number;
-  perPage?: number;
   orderBy?: string | null;
   orderByNullPosition?: OrderByNullPosition | null;
-  orderDirection?: OrderDirection & string;
+  orderDirection?: OrderDirection;
   queryFilter?: string | null;
   paginationSeed?: string | null;
+  page?: number;
+  perPage?: number;
+}
+export interface QueryFilterJSON {
+  parts?: QueryFilterJSONPart[];
+}
+export interface QueryFilterJSONPart {
+  leftParenthesis?: string | null;
+  rightParenthesis?: string | null;
+  logicalOperator?: LogicalOperator | null;
+  attributeName?: string | null;
+  relationalOperator?: RelationalKeyword | RelationalOperator | null;
+  value?: string | string[] | null;
 }
 export interface RecipeSearchQuery {
   cookbook?: string | null;
@@ -32,6 +46,13 @@ export interface RecipeSearchQuery {
   requireAllTools?: boolean;
   requireAllFoods?: boolean;
   search?: string | null;
+}
+export interface RequestQuery {
+  orderBy?: string | null;
+  orderByNullPosition?: OrderByNullPosition | null;
+  orderDirection?: OrderDirection;
+  queryFilter?: string | null;
+  paginationSeed?: string | null;
 }
 export interface SuccessResponse {
   message: string;

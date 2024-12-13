@@ -17,7 +17,7 @@ RUN yarn generate
 ###############################################
 # Base Image - Python
 ###############################################
-FROM python:3.10-slim as python-base
+FROM python:3.12-slim as python-base
 
 ENV MEALIE_HOME="/app"
 
@@ -78,6 +78,7 @@ RUN echo "crfpp-container"
 # Production Image
 ###############################################
 FROM python-base as production
+LABEL org.opencontainers.image.source="https://github.com/mealie-recipes/mealie"
 ENV PRODUCTION=true
 ENV TESTING=false
 
@@ -108,10 +109,6 @@ COPY --from=crfpp /usr/local/bin/crf_test /usr/local/bin/crf_test
 COPY ./mealie $MEALIE_HOME/mealie
 COPY ./poetry.lock ./pyproject.toml $MEALIE_HOME/
 
-# Alembic
-COPY ./alembic $MEALIE_HOME/alembic
-COPY ./alembic.ini $MEALIE_HOME/
-
 # venv already has runtime deps installed we get a quicker install
 WORKDIR $MEALIE_HOME
 RUN . $VENV_PATH/bin/activate && poetry install -E pgsql --only main
@@ -130,7 +127,6 @@ HEALTHCHECK CMD python $MEALIE_HOME/mealie/scripts/healthcheck.py || exit 1
 # ----------------------------------
 # Copy Frontend
 
-# copying caddy into image
 ENV STATIC_FILES=/spa/static
 COPY --from=builder /app/dist  ${STATIC_FILES}
 

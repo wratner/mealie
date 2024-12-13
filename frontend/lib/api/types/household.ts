@@ -15,6 +15,7 @@ export interface CreateGroupRecipeAction {
 }
 export interface CreateHouseholdPreferences {
   privateHousehold?: boolean;
+  lockRecipeEditsFromOtherHouseholds?: boolean;
   firstDayOfWeek?: number;
   recipePublic?: boolean;
   recipeShowNutrition?: boolean;
@@ -25,12 +26,14 @@ export interface CreateHouseholdPreferences {
 }
 export interface CreateInviteToken {
   uses: number;
+  groupId?: string | null;
+  householdId?: string | null;
 }
 export interface CreateWebhook {
   enabled?: boolean;
   name?: string;
   url?: string;
-  webhookType?: WebhookType & string;
+  webhookType?: WebhookType;
   scheduledTime: string;
 }
 export interface EmailInitationResponse {
@@ -45,10 +48,6 @@ export interface GroupEventNotifierCreate {
   name: string;
   appriseUrl?: string | null;
 }
-/**
- * These events are in-sync with the EventTypes found in the EventBusService.
- * If you modify this, make sure to update the EventBusService as well.
- */
 export interface GroupEventNotifierOptions {
   testMessage?: boolean;
   webhookTask?: boolean;
@@ -165,6 +164,10 @@ export interface GroupRecipeActionOut {
   householdId: string;
   id: string;
 }
+export interface GroupRecipeActionPayload {
+  action: GroupRecipeActionOut;
+  content: unknown;
+}
 export interface HouseholdCreate {
   groupId?: string | null;
   name: string;
@@ -181,6 +184,7 @@ export interface HouseholdInDB {
 }
 export interface ReadHouseholdPreferences {
   privateHousehold?: boolean;
+  lockRecipeEditsFromOtherHouseholds?: boolean;
   firstDayOfWeek?: number;
   recipePublic?: boolean;
   recipeShowNutrition?: boolean;
@@ -198,7 +202,7 @@ export interface ReadWebhook {
   enabled?: boolean;
   name?: string;
   url?: string;
-  webhookType?: WebhookType & string;
+  webhookType?: WebhookType;
   scheduledTime: string;
   groupId: string;
   householdId: string;
@@ -237,6 +241,7 @@ export interface SaveGroupRecipeAction {
 }
 export interface SaveHouseholdPreferences {
   privateHousehold?: boolean;
+  lockRecipeEditsFromOtherHouseholds?: boolean;
   firstDayOfWeek?: number;
   recipePublic?: boolean;
   recipeShowNutrition?: boolean;
@@ -256,13 +261,14 @@ export interface SaveWebhook {
   enabled?: boolean;
   name?: string;
   url?: string;
-  webhookType?: WebhookType & string;
+  webhookType?: WebhookType;
   scheduledTime: string;
   groupId: string;
   householdId: string;
 }
 export interface SetPermissions {
   userId: string;
+  canManageHousehold?: boolean;
   canManage?: boolean;
   canInvite?: boolean;
   canOrganize?: boolean;
@@ -478,9 +484,6 @@ export interface ShoppingListItemUpdate {
   } | null;
   recipeReferences?: (ShoppingListItemRecipeRefCreate | ShoppingListItemRecipeRefUpdate)[];
 }
-/**
- * Only used for bulk update operations where the shopping list item id isn't already supplied
- */
 export interface ShoppingListItemUpdateBulk {
   quantity?: number;
   unit?: IngredientUnit | CreateIngredientUnit | null;
@@ -501,9 +504,6 @@ export interface ShoppingListItemUpdateBulk {
   recipeReferences?: (ShoppingListItemRecipeRefCreate | ShoppingListItemRecipeRefUpdate)[];
   id: string;
 }
-/**
- * Container for bulk shopping list item changes
- */
 export interface ShoppingListItemsCollectionOut {
   createdItems?: ShoppingListItemOut[];
   updatedItems?: ShoppingListItemOut[];
@@ -557,6 +557,8 @@ export interface RecipeSummary {
   name?: string | null;
   slug?: string;
   image?: unknown;
+  recipeServings?: number;
+  recipeYieldQuantity?: number;
   recipeYield?: string | null;
   totalTime?: string | null;
   prepTime?: string | null;
@@ -591,6 +593,7 @@ export interface RecipeTool {
   name: string;
   slug: string;
   onHand?: boolean;
+  [k: string]: unknown;
 }
 export interface ShoppingListRemoveRecipeParams {
   recipeDecrementQuantity?: number;
@@ -645,6 +648,7 @@ export interface UpdateHouseholdAdmin {
 }
 export interface UpdateHouseholdPreferences {
   privateHousehold?: boolean;
+  lockRecipeEditsFromOtherHouseholds?: boolean;
   firstDayOfWeek?: number;
   recipePublic?: boolean;
   recipeShowNutrition?: boolean;

@@ -51,8 +51,6 @@
             <v-text-field
               v-model="newMealdate"
               :label="$t('general.date')"
-              :hint="$t('recipe.date-format-hint')"
-              persistent-hint
               :prepend-icon="$globals.icons.calendar"
               v-bind="attrs"
               readonly
@@ -376,7 +374,7 @@ export default defineComponent({
       const response = await groupRecipeActionsStore.execute(action, props.recipe);
 
       if (action.actionType === "post") {
-        if (!response || (response.status >= 200  && response.status < 300)) {
+        if (!response?.error) {
           alert.success(i18n.tc("events.message-sent"));
         } else {
           alert.error(i18n.tc("events.something-went-wrong"));

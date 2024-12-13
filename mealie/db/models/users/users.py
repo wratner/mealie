@@ -3,13 +3,14 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
 from pydantic import ConfigDict
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String, orm, select
+from sqlalchemy import Boolean, Enum, ForeignKey, Integer, String, orm, select
 from sqlalchemy.ext.associationproxy import AssociationProxy, association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, Session, mapped_column
 
 from mealie.core.config import get_app_settings
 from mealie.db.models._model_utils.auto_init import auto_init
+from mealie.db.models._model_utils.datetime import NaiveDateTime
 from mealie.db.models._model_utils.guid import GUID
 
 from .._model_base import BaseMixins, SqlAlchemyBase
@@ -65,9 +66,10 @@ class User(SqlAlchemyBase, BaseMixins):
 
     cache_key: Mapped[str | None] = mapped_column(String, default="1234")
     login_attemps: Mapped[int | None] = mapped_column(Integer, default=0)
-    locked_at: Mapped[datetime | None] = mapped_column(DateTime, default=None)
+    locked_at: Mapped[datetime | None] = mapped_column(NaiveDateTime, default=None)
 
     # Group Permissions
+    can_manage_household: Mapped[bool | None] = mapped_column(Boolean, default=False)
     can_manage: Mapped[bool | None] = mapped_column(Boolean, default=False)
     can_invite: Mapped[bool | None] = mapped_column(Boolean, default=False)
     can_organize: Mapped[bool | None] = mapped_column(Boolean, default=False)
@@ -108,6 +110,7 @@ class User(SqlAlchemyBase, BaseMixins):
         exclude={
             "password",
             "admin",
+            "can_manage_household",
             "can_manage",
             "can_invite",
             "can_organize",
@@ -148,6 +151,14 @@ class User(SqlAlchemyBase, BaseMixins):
         else:
             self.household = None
 
+        if self.group is None:
+            raise ValueError(f"Group {group} does not exist; cannot create user")
+        if self.household is None:
+            raise ValueError(
+                f'Household "{household}" does not exist on group '
+                f'"{self.group.name}" ({self.group.id}); cannot create user'
+            )
+
         self.rated_recipes = []
 
         self.password = password
@@ -186,22 +197,27 @@ class User(SqlAlchemyBase, BaseMixins):
     def update_password(self, password):
         self.password = password
 
-    def _set_permissions(self, admin, can_manage=False, can_invite=False, can_organize=False, **_):
+    def _set_permissions(
+        self, admin, can_manage_household=False, can_manage=False, can_invite=False, can_organize=False, **_
+    ):
         """Set user permissions based on the admin flag and the passed in kwargs
 
         Args:
             admin (bool):
+            can_manage_household (bool):
             can_manage (bool):
             can_invite (bool):
             can_organize (bool):
         """
         self.admin = admin
         if self.admin:
+            self.can_manage_household = True
             self.can_manage = True
             self.can_invite = True
             self.can_organize = True
             self.advanced = True
         else:
+            self.can_manage_household = can_manage_household
             self.can_manage = can_manage
             self.can_invite = can_invite
             self.can_organize = can_organize

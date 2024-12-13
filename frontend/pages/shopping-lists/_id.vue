@@ -56,30 +56,40 @@
 
       <!-- View By Label -->
       <div v-else>
-        <div v-for="(value, key, idx) in itemsByLabel" :key="key" class="mb-6">
-          <div @click="toggleShowChecked()">
-            <span v-if="idx || key !== $tc('shopping-list.no-label')">
-              <v-icon :color="getLabelColor(value[0])">
-                {{ $globals.icons.tags }}
-              </v-icon>
-            </span>
+        <div v-for="(value, key) in itemsByLabel" :key="key" class="pb-4">
+          <v-btn
+            :color="getLabelColor(value[0]) ? getLabelColor(value[0]) : '#959595'"
+            :style="{
+                'color': getTextColor(getLabelColor(value[0])),
+                'letter-spacing': 'normal',
+              }"
+            @click="toggleShowLabel(key)"
+          >
+            <v-icon>
+              {{ labelOpenState[key] ? $globals.icons.chevronDown : $globals.icons.chevronRight }}
+            </v-icon>
             {{ key }}
+          </v-btn>
+        <v-divider/>
+        <v-expand-transition group>
+          <div v-show="labelOpenState[key]">
+            <draggable :value="value" handle=".handle" delay="250" :delay-on-touch-only="true" @start="loadingCounter += 1" @end="loadingCounter -= 1" @input="updateIndexUncheckedByLabel(key, $event)">
+              <v-lazy v-for="(item, index) in value" :key="item.id" class="ml-2 my-2">
+                <ShoppingListItem
+                  v-model="value[index]"
+                  :show-label=false
+                  :labels="allLabels || []"
+                  :units="allUnits || []"
+                  :foods="allFoods || []"
+                  :recipes="recipeMap"
+                  @checked="saveListItem"
+                  @save="saveListItem"
+                  @delete="deleteListItem(item)"
+                />
+              </v-lazy>
+            </draggable>
           </div>
-          <draggable :value="value" handle=".handle" delay="250" :delay-on-touch-only="true" @start="loadingCounter += 1" @end="loadingCounter -= 1" @input="updateIndexUncheckedByLabel(key, $event)">
-            <v-lazy v-for="(item, index) in value" :key="item.id" class="ml-2 my-2">
-              <ShoppingListItem
-                v-model="value[index]"
-                :show-label=false
-                :labels="allLabels || []"
-                :units="allUnits || []"
-                :foods="allFoods || []"
-                :recipes="recipeMap"
-                @checked="saveListItem"
-                @save="saveListItem"
-                @delete="deleteListItem(item)"
-              />
-            </v-lazy>
-          </draggable>
+        </v-expand-transition>
         </div>
       </div>
 
@@ -93,7 +103,15 @@
         @submit="saveLabelOrder"
         @close="cancelLabelOrder">
         <v-card height="fit-content" max-height="70vh" style="overflow-y: auto;">
-          <draggable v-if="localLabels" :value="localLabels" handle=".handle" class="my-2" @input="updateLabelOrder">
+          <draggable
+            v-if="localLabels"
+            :value="localLabels"
+            handle=".handle"
+            delay="250"
+            :delay-on-touch-only="true"
+            class="my-2"
+            @input="updateLabelOrder"
+          >
             <div v-for="(labelSetting, index) in localLabels" :key="labelSetting.id">
               <MultiPurposeLabelSection v-model="localLabels[index]" use-color />
             </div>
@@ -282,13 +300,14 @@
         />
       </div>
     </v-lazy>
+    <WakelockSwitch/>
   </v-container>
 </template>
 
 <script lang="ts">
 import draggable from "vuedraggable";
 
-import { defineComponent, useRoute, computed, ref, toRefs, onUnmounted, useContext, reactive } from "@nuxtjs/composition-api";
+import { defineComponent, useRoute, computed, ref, toRefs, onUnmounted, useContext, reactive, watch } from "@nuxtjs/composition-api";
 import { useIdle, useToggle } from "@vueuse/core";
 import { useCopyList } from "~/composables/use-copy";
 import { useUserApi } from "~/composables/api";
@@ -301,6 +320,7 @@ import ShoppingListItemEditor from "~/components/Domain/ShoppingList/ShoppingLis
 import { useFoodStore, useLabelStore, useUnitStore } from "~/composables/store";
 import { useShoppingListItemActions } from "~/composables/use-shopping-list-item-actions";
 import { useShoppingListPreferences } from "~/composables/use-users/preferences";
+import { getTextColor } from "~/composables/use-text-color";
 import { uuid4 } from "~/composables/use-utils";
 
 type CopyTypes = "plain" | "markdown";
@@ -448,6 +468,43 @@ export default defineComponent({
           ?? [],
       };
     });
+
+    // =====================================
+    // Collapsable Labels
+    const labelOpenState = ref<{ [key: string]: boolean }>({});
+
+    const initializeLabelOpenStates = () => {
+      if (!shoppingList.value?.listItems) return;
+
+      const existingLabels = new Set(Object.keys(labelOpenState.value));
+      let hasChanges = false;
+
+      for (const item of shoppingList.value.listItems) {
+        const labelName = item.label?.name || i18n.tc("shopping-list.no-label");
+        if (!existingLabels.has(labelName) && !(labelName in labelOpenState.value)) {
+          labelOpenState.value[labelName] = true;
+          hasChanges = true;
+        }
+      }
+
+      if (hasChanges) {
+        labelOpenState.value = { ...labelOpenState.value };
+      }
+    };
+
+    const labelNames = computed(() => {
+      return new Set(
+        shoppingList.value?.listItems
+          ?.map(item => item.label?.name || i18n.tc("shopping-list.no-label"))
+          .filter(Boolean) ?? []
+      );
+    });
+
+    watch(labelNames, initializeLabelOpenStates, { immediate: true });
+
+    function toggleShowLabel(key: string) {
+      labelOpenState.value[key] = !labelOpenState.value[key];
+    }
 
     const [showChecked, toggleShowChecked] = useToggle(false);
 
@@ -602,9 +659,9 @@ export default defineComponent({
 
     const localLabels = ref<ShoppingListMultiPurposeLabelOut[]>()
 
-    const { labels: allLabels } = useLabelStore();
-    const { units: allUnits } = useUnitStore();
-    const { foods: allFoods } = useFoodStore();
+    const { store: allLabels } = useLabelStore();
+    const { store: allUnits } = useUnitStore();
+    const { store: allFoods } = useFoodStore();
 
     function getLabelColor(item: ShoppingListItemOut | null) {
       return item?.label?.color;
@@ -791,16 +848,6 @@ export default defineComponent({
 
       itemsByLabel.value = itemsSorted;
     }
-
-    async function refreshLabels() {
-      const { data } = await userApi.multiPurposeLabels.getAll();
-
-      if (data) {
-        allLabels.value = data.items ?? [];
-      }
-    }
-
-    refreshLabels();
 
     // =====================================
     // Add/Remove Recipe References
@@ -1029,7 +1076,7 @@ export default defineComponent({
       }
 
       // update current user
-      allUsers.value = data.sort((a, b) => ((a.fullName || "") < (b.fullName || "") ? -1 : 1));
+      allUsers.value = data.items.sort((a, b) => ((a.fullName || "") < (b.fullName || "") ? -1 : 1));
       currentUserId.value = shoppingList.value?.userId;
     }
 
@@ -1086,6 +1133,8 @@ export default defineComponent({
       shoppingList,
       showChecked,
       sortByLabels,
+      labelOpenState,
+      toggleShowLabel,
       toggleShowChecked,
       uncheckAll,
       openUncheckAll,
@@ -1098,6 +1147,7 @@ export default defineComponent({
       allUsers,
       currentUserId,
       updateSettings,
+      getTextColor,
     };
   },
   head() {

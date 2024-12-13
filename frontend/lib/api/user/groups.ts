@@ -1,6 +1,7 @@
 import { BaseCRUDAPI } from "../base/base-clients";
+import { PaginationData } from "../types/non-generated";
+import { QueryValue } from "../base/route";
 import { GroupBase, GroupInDB, GroupSummary, UserSummary } from "~/lib/api/types/user";
-import { HouseholdSummary } from "~/lib/api/types/household";
 import {
   GroupAdminUpdate,
   GroupStorage,
@@ -15,12 +16,7 @@ const routes = {
   groupsSelf: `${prefix}/groups/self`,
   preferences: `${prefix}/groups/preferences`,
   storage: `${prefix}/groups/storage`,
-  households: `${prefix}/households`,
-  membersHouseholdId: (householdId: string | number | null) => {
-    return householdId ?
-      `${prefix}/households/members?householdId=${householdId}` :
-      `${prefix}/groups/members`;
-  },
+  members: `${prefix}/groups/members`,
   groupsId: (id: string | number) => `${prefix}/admin/groups/${id}`,
 };
 
@@ -42,12 +38,8 @@ export class GroupAPI extends BaseCRUDAPI<GroupBase, GroupInDB, GroupAdminUpdate
     return await this.requests.put<ReadGroupPreferences, UpdateGroupPreferences>(routes.preferences, payload);
   }
 
-  async fetchMembers(householdId: string | number | null = null) {
-    return await this.requests.get<UserSummary[]>(routes.membersHouseholdId(householdId));
-  }
-
-  async fetchHouseholds() {
-    return await this.requests.get<HouseholdSummary[]>(routes.households);
+  async fetchMembers(page = 1, perPage = -1, params = {} as Record<string, QueryValue>) {
+    return await this.requests.get<PaginationData<UserSummary>>(routes.members, { page, perPage, ...params });
   }
 
   async storage() {

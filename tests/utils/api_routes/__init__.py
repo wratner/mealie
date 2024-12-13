@@ -11,6 +11,8 @@ admin_backups = "/api/admin/backups"
 """`/api/admin/backups`"""
 admin_backups_upload = "/api/admin/backups/upload"
 """`/api/admin/backups/upload`"""
+admin_debug_openai = "/api/admin/debug/openai"
+"""`/api/admin/debug/openai`"""
 admin_email = "/api/admin/email"
 """`/api/admin/email`"""
 admin_groups = "/api/admin/groups"
@@ -35,14 +37,16 @@ admin_users_unlock = "/api/admin/users/unlock"
 """`/api/admin/users/unlock`"""
 app_about = "/api/app/about"
 """`/api/app/about`"""
-app_about_oidc = "/api/app/about/oidc"
-"""`/api/app/about/oidc`"""
 app_about_startup_info = "/api/app/about/startup-info"
 """`/api/app/about/startup-info`"""
 app_about_theme = "/api/app/about/theme"
 """`/api/app/about/theme`"""
 auth_logout = "/api/auth/logout"
 """`/api/auth/logout`"""
+auth_oauth = "/api/auth/oauth"
+"""`/api/auth/oauth`"""
+auth_oauth_callback = "/api/auth/oauth/callback"
+"""`/api/auth/oauth/callback`"""
 auth_refresh = "/api/auth/refresh"
 """`/api/auth/refresh`"""
 auth_token = "/api/auth/token"
@@ -145,16 +149,20 @@ recipes_bulk_actions_settings = "/api/recipes/bulk-actions/settings"
 """`/api/recipes/bulk-actions/settings`"""
 recipes_bulk_actions_tag = "/api/recipes/bulk-actions/tag"
 """`/api/recipes/bulk-actions/tag`"""
-recipes_create_from_image = "/api/recipes/create-from-image"
-"""`/api/recipes/create-from-image`"""
-recipes_create_from_zip = "/api/recipes/create-from-zip"
-"""`/api/recipes/create-from-zip`"""
-recipes_create_url = "/api/recipes/create-url"
-"""`/api/recipes/create-url`"""
-recipes_create_url_bulk = "/api/recipes/create-url/bulk"
-"""`/api/recipes/create-url/bulk`"""
+recipes_create_html_or_json = "/api/recipes/create/html-or-json"
+"""`/api/recipes/create/html-or-json`"""
+recipes_create_image = "/api/recipes/create/image"
+"""`/api/recipes/create/image`"""
+recipes_create_url = "/api/recipes/create/url"
+"""`/api/recipes/create/url`"""
+recipes_create_url_bulk = "/api/recipes/create/url/bulk"
+"""`/api/recipes/create/url/bulk`"""
+recipes_create_zip = "/api/recipes/create/zip"
+"""`/api/recipes/create/zip`"""
 recipes_exports = "/api/recipes/exports"
 """`/api/recipes/exports`"""
+recipes_suggestions = "/api/recipes/suggestions"
+"""`/api/recipes/suggestions`"""
 recipes_test_scrape_url = "/api/recipes/test-scrape-url"
 """`/api/recipes/test-scrape-url`"""
 recipes_timeline_events = "/api/recipes/timeline/events"
@@ -247,6 +255,16 @@ def explore_groups_group_slug_foods_item_id(group_slug, item_id):
     return f"{prefix}/explore/groups/{group_slug}/foods/{item_id}"
 
 
+def explore_groups_group_slug_households(group_slug):
+    """`/api/explore/groups/{group_slug}/households`"""
+    return f"{prefix}/explore/groups/{group_slug}/households"
+
+
+def explore_groups_group_slug_households_household_slug(group_slug, household_slug):
+    """`/api/explore/groups/{group_slug}/households/{household_slug}`"""
+    return f"{prefix}/explore/groups/{group_slug}/households/{household_slug}"
+
+
 def explore_groups_group_slug_organizers_categories(group_slug):
     """`/api/explore/groups/{group_slug}/organizers/categories`"""
     return f"{prefix}/explore/groups/{group_slug}/organizers/categories"
@@ -287,14 +305,29 @@ def explore_groups_group_slug_recipes_recipe_slug(group_slug, recipe_slug):
     return f"{prefix}/explore/groups/{group_slug}/recipes/{recipe_slug}"
 
 
+def explore_groups_group_slug_recipes_suggestions(group_slug):
+    """`/api/explore/groups/{group_slug}/recipes/suggestions`"""
+    return f"{prefix}/explore/groups/{group_slug}/recipes/suggestions"
+
+
 def foods_item_id(item_id):
     """`/api/foods/{item_id}`"""
     return f"{prefix}/foods/{item_id}"
 
 
+def groups_households_household_slug(household_slug):
+    """`/api/groups/households/{household_slug}`"""
+    return f"{prefix}/groups/households/{household_slug}"
+
+
 def groups_labels_item_id(item_id):
     """`/api/groups/labels/{item_id}`"""
     return f"{prefix}/groups/labels/{item_id}"
+
+
+def groups_members_username_or_id(username_or_id):
+    """`/api/groups/members/{username_or_id}`"""
+    return f"{prefix}/groups/members/{username_or_id}"
 
 
 def groups_reports_item_id(item_id):
@@ -330,6 +363,11 @@ def households_mealplans_rules_item_id(item_id):
 def households_recipe_actions_item_id(item_id):
     """`/api/households/recipe-actions/{item_id}`"""
     return f"{prefix}/households/recipe-actions/{item_id}"
+
+
+def households_recipe_actions_item_id_trigger_recipe_slug(item_id, recipe_slug):
+    """`/api/households/recipe-actions/{item_id}/trigger/{recipe_slug}`"""
+    return f"{prefix}/households/recipe-actions/{item_id}/trigger/{recipe_slug}"
 
 
 def households_shopping_items_item_id(item_id):

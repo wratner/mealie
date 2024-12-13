@@ -13,6 +13,7 @@
       )"
       color="primary"
       :icon="$globals.icons.foods"
+      :submit-disabled="isCreateDisabled"
       @submit="
         if (newMeal.existing) {
           actions.updateOne(newMeal);
@@ -70,9 +71,10 @@
             item-text="name"
             item-value="id"
             :return-object="false"
+            :rules="[requiredRule]"
           />
           <template v-else>
-            <v-text-field v-model="newMeal.title" :label="$t('meal-plan.meal-title')" />
+            <v-text-field v-model="newMeal.title" :rules="[requiredRule]" :label="$t('meal-plan.meal-title')" />
             <v-textarea v-model="newMeal.text" rows="2" :label="$t('meal-plan.meal-note')" />
           </template>
         </v-card-text>
@@ -100,6 +102,8 @@
         <draggable
           tag="div"
           handle=".handle"
+          delay="250"
+          :delay-on-touch-only="true"
           :value="plan.meals"
           group="meals"
           :data-index="index"
@@ -220,7 +224,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, reactive, ref, watch, onMounted } from "@nuxtjs/composition-api";
+import { defineComponent, computed, reactive, ref, watch, onMounted, useContext } from "@nuxtjs/composition-api";
 import { format } from "date-fns";
 import { SortableEvent } from "sortablejs";
 import draggable from "vuedraggable";
@@ -249,7 +253,9 @@ export default defineComponent({
   },
   setup(props) {
     const api = useUserApi();
+    const { $auth } = useContext();
     const { household } = useHouseholdSelf();
+    const requiredRule = (value: any) => !!value || "Required."
 
     const state = ref({
       dialog: false,
@@ -309,7 +315,16 @@ export default defineComponent({
       existing: false,
       id: 0,
       groupId: "",
+      userId: $auth.user?.id || "",
     });
+
+    const isCreateDisabled = computed(() => {
+      if (dialog.note) {
+        return !newMeal.title.trim();
+      }
+      return !newMeal.recipeId;
+    });
+
 
     function openDialog(date: Date) {
       newMeal.date = format(date, "yyyy-MM-dd");
@@ -317,17 +332,18 @@ export default defineComponent({
     }
 
     function editMeal(mealplan: UpdatePlanEntry) {
-      const { date, title, text, entryType, recipeId, id, groupId } = mealplan;
+      const { date, title, text, entryType, recipeId, id, groupId, userId } = mealplan;
       if (!entryType) return;
 
       newMeal.date = date;
       newMeal.title = title || "";
       newMeal.text = text || "";
-      newMeal.recipeId = recipeId;
+      newMeal.recipeId = recipeId || undefined;
       newMeal.entryType = entryType;
       newMeal.existing = true;
       newMeal.id = id;
       newMeal.groupId = groupId;
+      newMeal.userId = userId || $auth.user?.id || "";
 
       state.value.dialog = true;
       dialog.note = !recipeId;
@@ -368,6 +384,8 @@ export default defineComponent({
       onMoveCallback,
       planTypeOptions,
       getEntryTypeText,
+      requiredRule,
+      isCreateDisabled,
 
       // Dialog
       dialog,
