@@ -207,4 +207,9 @@ export class RecipeAPI extends BaseCRUDAPI<CreateRecipe, Recipe, Recipe> {
 
     return await this.requests.put<UpdateImageResponse, FormData>(routes.recipesTimelineEventIdImage(eventId), formData);
   }
+
+  async createFromImages(formData: FormData) {
+    const apiRoute = routes.recipesCreateFromImage;
+    return await this.requests.post<string>(apiRoute, formData);
+  }
 }

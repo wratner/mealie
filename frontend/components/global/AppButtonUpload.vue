@@ -1,6 +1,6 @@
 <template>
   <v-form ref="file">
-    <input ref="uploader" class="d-none" type="file" :accept="accept" @change="onFileChanged" />
+    <input ref="uploader" class="d-none" type="file" :accept="accept" :multiple="multiple" @change="onFileChanged" />
     <slot v-bind="{ isSelecting, onButtonClick }">
       <v-btn :loading="isSelecting" :small="small" :color="color" :text="textBtn" :disabled="disabled" @click="onButtonClick">
         <v-icon left> {{ effIcon }}</v-icon>
@@ -57,7 +57,11 @@ export default defineComponent({
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, context) {
     const file = ref<File | null>(null);
@@ -94,9 +98,13 @@ export default defineComponent({
 
     function onFileChanged(e: Event) {
       const target = e.target as HTMLInputElement;
-      if (target.files !== null && target.files.length > 0 && file.value !== null) {
-        file.value = target.files[0];
-        upload();
+      if (target.files && target.files.length > 0) {
+        if (props.multiple) {
+          context.emit(UPLOAD_EVENT, Array.from(target.files));
+        } else {
+          file.value = target.files[0];
+          upload();
+        }
       }
     }
 
